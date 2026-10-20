@@ -76,11 +76,28 @@ b,strong{font-weight:600}
 /* Шапка */
 .bar{position:sticky;top:0;z-index:50;background:var(--bg);transition:box-shadow 200ms ease}
 .bar.is-stuck{box-shadow:0 1px 0 var(--tile-2)}
-.bar .wrap{display:flex;align-items:center;gap:28px;min-height:68px}
+.bar .wrap{position:relative;display:flex;align-items:center;gap:24px;min-height:68px}
 .logo{font:700 21px/1 var(--font);letter-spacing:-0.02em;text-decoration:none;color:var(--ink);white-space:nowrap}
-.nav{display:flex;gap:24px;font-size:15px}
-.nav a{text-decoration:none;color:var(--text)}
-.nav a:hover{color:var(--accent)}
+.nav{display:flex;align-items:center;gap:2px}
+.nav__item{position:relative}
+.nav__link{display:inline-flex;align-items:center;gap:4px;min-height:40px;padding:0 10px;border:0;background:none;cursor:pointer;font:400 15px/1 var(--font);color:var(--text);text-decoration:none;transition:color 160ms ease}
+.nav__link svg{width:12px;height:12px;color:var(--muted);transition:transform 200ms ease}
+.nav__link:hover,.nav__item[data-open="true"]>.nav__link{color:var(--accent)}
+.nav__item[data-open="true"]>.nav__link svg{transform:rotate(180deg)}
+.drop{position:absolute;top:calc(100% + 10px);left:0;display:flex;flex-direction:column;min-width:250px;padding:8px;background:var(--bg);box-shadow:0 12px 32px rgba(0,0,0,.12);opacity:0;visibility:hidden;transition:opacity 150ms ease,visibility 0s linear 150ms}
+.nav__item[data-open="true"] .drop{opacity:1;visibility:visible;transition:opacity 150ms ease}
+.drop a{padding:10px 12px;font-size:15px;text-decoration:none;white-space:nowrap;color:var(--text)}
+.drop a:hover{background:var(--tile)}
+.drop a.all{font-weight:600;color:var(--ink)}
+.mnav{display:none}
+.mnav summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;min-height:40px;padding:0 16px;background:var(--night);color:#FFFFFF;font:600 14px/1 var(--font)}
+.mnav summary::-webkit-details-marker{display:none}
+.mnav__panel{position:absolute;left:0;right:0;top:100%;background:var(--bg);box-shadow:0 12px 32px rgba(0,0,0,.12);padding:8px var(--side) 20px;max-height:calc(100dvh - 68px);overflow-y:auto}
+.mnav__panel li{padding-block:10px}
+.mnav__panel li>a{font:600 19px/1.2 var(--font);text-decoration:none;color:var(--ink)}
+.mnav__sub{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mnav__sub a{font-size:14px;text-decoration:none;padding:7px 12px;background:var(--tile)}
+.mnav__panel .btn{margin-top:14px;width:100%}
 .bar__tools{display:flex;align-items:center;gap:20px;margin-left:auto}
 .bar__tel{font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap}
 .bar .btn{min-height:40px;padding:0 18px;font-size:14px}
@@ -210,6 +227,7 @@ a.client:hover{background:var(--tile-2)}
 }
 @media (max-width:1100px){
   .nav{display:none}
+  .mnav{display:block}
   .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tile--main{grid-row:span 1;grid-column:span 2}
   .clients,.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -224,6 +242,7 @@ a.client:hover{background:var(--tile-2)}
   .tab{flex:1;padding:0 8px}
 }
 @media (max-width:560px){
+  .bar__tools>.btn{display:none}
   .bento,.clients,.steps{grid-template-columns:minmax(0,1fr)}
   .tile--main,.tile--wide{grid-column:auto}
   .person{grid-template-columns:minmax(0,1fr)}
@@ -241,15 +260,44 @@ a.client:hover{background:var(--tile-2)}
   <div class="wrap">
     <a class="logo" href="/" aria-label="SALTSEO, на главную">SALT<span class="slash">/</span>SEO</a>
     <nav class="nav" aria-label="Основное меню">
-      <a href="#services">Услуги</a>
-      <a href="#prices">Цены</a>
-      <a href="#clients">Клиенты</a>
-      <a href="#faq">Вопросы</a>
-      <a href="#form">Контакты</a>
+      <div class="nav__item">
+        <button class="nav__link" type="button" aria-expanded="false" aria-controls="d-seo">SEO <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        <div class="drop" id="d-seo"><a class="all" href="/seo/">Всё о SEO-продвижении</a><a href="/seo/yandex/">В Яндексе</a><a href="/seo/google/">В Google</a><a href="/seo/po-trafiku/">По трафику</a><a href="/seo/po-lidam/">По лидам</a><a href="/seo/internet-magazin/">Интернет-магазины</a><a href="/seo/krupnye-sajty/">Порталы и агрегаторы</a><a href="/seo/regiony/">По регионам</a><a href="/seo/zarubezhom/">За рубежом</a><a href="/seo/geo-ai/">В нейросетях</a></div>
+      </div>
+      <div class="nav__item">
+        <button class="nav__link" type="button" aria-expanded="false" aria-controls="d-audit">Аудит <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        <div class="drop" id="d-audit"><a class="all" href="/audit/">Все аудиты</a><a href="/audit/tehnicheskij/">Технический</a><a href="/audit/kompleksnyj/">Комплексный</a><a href="/audit/sankcii/">Вывод из-под санкций</a><a href="/audit/migraciya/">Переезд и редизайн</a></div>
+      </div>
+      <div class="nav__item">
+        <button class="nav__link" type="button" aria-expanded="false" aria-controls="d-aso">ASO <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        <div class="drop" id="d-aso"><a class="all" href="/aso/">Продвижение приложений</a><a href="/aso/app-store/">App Store</a><a href="/aso/google-play/">Google Play</a><a href="/aso/rustore/">RuStore</a><a href="/aso/audit/">Аудит приложения</a></div>
+      </div>
+      <div class="nav__item">
+        <button class="nav__link" type="button" aria-expanded="false" aria-controls="d-orm">ORM <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        <div class="drop" id="d-orm"><a class="all" href="/orm/">Управление репутацией</a><a href="/orm/serm/">SERM</a><a href="/orm/otzyvy/">Работа с отзывами</a><a href="/orm/udalenie-negativa/">Удаление негатива</a><a href="/orm/audit/">Репутационный аудит</a></div>
+      </div>
+      <a class="nav__link" href="#prices">Цены</a>
+      <a class="nav__link" href="/cases/">Кейсы</a>
+      <a class="nav__link" href="/about/">О нас</a>
     </nav>
     <div class="bar__tools">
       <a class="bar__tel" href="tel:+79265205250">+7 926 520-52-50</a>
       <a class="btn" href="#form">Подать заявку</a>
+      <details class="mnav">
+        <summary>Меню</summary>
+        <div class="mnav__panel">
+          <ul>
+            <li><a href="/seo/">SEO</a><div class="mnav__sub"><a href="/seo/yandex/">Яндекс</a><a href="/seo/google/">Google</a><a href="/seo/po-trafiku/">По трафику</a><a href="/seo/regiony/">Регионы</a><a href="/seo/zarubezhom/">За рубежом</a></div></li>
+            <li><a href="/audit/">Аудит</a><div class="mnav__sub"><a href="/audit/tehnicheskij/">Технический</a><a href="/audit/kompleksnyj/">Комплексный</a><a href="/audit/sankcii/">Санкции</a></div></li>
+            <li><a href="/aso/">ASO</a><div class="mnav__sub"><a href="/aso/app-store/">App Store</a><a href="/aso/google-play/">Google Play</a><a href="/aso/rustore/">RuStore</a></div></li>
+            <li><a href="/orm/">ORM</a><div class="mnav__sub"><a href="/orm/serm/">SERM</a><a href="/orm/otzyvy/">Отзывы</a><a href="/orm/udalenie-negativa/">Негатив</a></div></li>
+            <li><a href="#prices">Цены</a></li>
+            <li><a href="/cases/">Кейсы</a></li>
+            <li><a href="/about/">О нас</a></li>
+          </ul>
+          <a class="btn" href="#form">Подать заявку</a>
+        </div>
+      </details>
     </div>
   </div>
 </header>
@@ -466,6 +514,25 @@ a.client:hover{background:var(--tile-2)}
   var bar = document.getElementById('bar');
   var onScroll = function () { bar.classList.toggle('is-stuck', window.scrollY > 4); };
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Выпадающие меню: наведение и клик
+  var items = Array.prototype.slice.call(document.querySelectorAll('.nav__item'));
+  function closeAll(except) {
+    items.forEach(function (it) { if (it !== except) { it.dataset.open = 'false'; it.querySelector('.nav__link').setAttribute('aria-expanded', 'false'); } });
+  }
+  items.forEach(function (it) {
+    var btn = it.querySelector('.nav__link'), t;
+    function set(v) { it.dataset.open = v ? 'true' : 'false'; btn.setAttribute('aria-expanded', v ? 'true' : 'false'); }
+    btn.addEventListener('click', function () { var v = it.dataset.open !== 'true'; closeAll(it); set(v); });
+    if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+      it.addEventListener('mouseenter', function () { clearTimeout(t); closeAll(it); set(true); });
+      it.addEventListener('mouseleave', function () { t = setTimeout(function () { set(false); }, 140); });
+    }
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.nav__item')) closeAll(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+  // Мобильное меню закрывается при переходе
+  document.querySelectorAll('.mnav a').forEach(function (a) { a.addEventListener('click', function () { a.closest('details').open = false; }); });
 
   // Вкладки «Сайт / Приложение / Репутация»
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
