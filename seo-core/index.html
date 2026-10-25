@@ -426,14 +426,14 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .steps-list span{color:var(--ink-2);font-size:14.5px}
 
 /* footer */
-.foot{padding-block:clamp(64px,8vw,110px) 40px}
-.foot-word{font-size:clamp(64px,15vw,220px);font-weight:800;letter-spacing:-.06em;line-height:.85;color:var(--accent);margin-bottom:40px}
+.foot{padding-block:56px 32px;background:var(--surface)}
+.page>.sec:last-child,.page>.sec-tight:last-child{padding-bottom:clamp(40px,5vw,64px)}
 .foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding-bottom:40px}
 .foot-grid h4{font-size:14px;letter-spacing:0;margin-bottom:12px;color:var(--ink-3);font-weight:700}
 .foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-weight:600}
 .foot-grid a:hover{color:var(--accent)}
 .foot-bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
-.theme-t{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border-radius:99px;padding:8px 14px;font-weight:700;font-size:13px;color:var(--ink-2)}
+.theme-t{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);border-radius:99px;padding:8px 14px;font-weight:700;font-size:13px;color:var(--ink-2)}
 
 /* motion */
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -1165,9 +1165,8 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 
 <footer class="foot">
   <div class="wrap">
-    <div class="foot-word" aria-hidden="true">SEO Core</div>
     <div class="foot-grid">
-      <div style="display:grid;gap:14px;align-content:start"><p class="muted" style="max-width:36ch">Платформа маркетинговой аналитики: от данных к управленческим решениям.</p><button class="theme-t" type="button" id="theme"><svg class="i" style="width:16px;height:16px"><use href="#i-moon"/></svg><span>Сменить тему</span></button></div>
+      <div style="display:grid;gap:14px;align-content:start"><a class="logo" href="#home" data-go="home"><span class="logo-mark"><svg class="i"><use href="#i-sparkle"/></svg></span>SEO Core</a><p class="muted" style="max-width:36ch">Платформа маркетинговой аналитики: от данных к управленческим решениям.</p><button class="theme-t" type="button" id="theme"><svg class="i" style="width:16px;height:16px"><use href="#i-moon"/></svg><span>Сменить тему</span></button></div>
       <div><h4>Продукт</h4><ul><li><a href="#features" data-go="features">Возможности</a></li><li><a href="#pricing" data-go="pricing">Тарифы</a></li><li><a href="https://konseo.space/login" target="_blank" rel="noopener">Вход в кабинет</a></li></ul></div>
       <div><h4>Кому</h4><ul><li><a href="#cmo" data-go="cmo">Директору по маркетингу</a></li><li><a href="#partners" data-go="partners">Агентствам и партнёрам</a></li><li><a href="#demo" data-go="demo">Заявка на доступ</a></li></ul></div>
       <div><h4>Источники</h4><ul><li>Яндекс Метрика</li><li>Яндекс Вебмастер</li><li>Яндекс Директ</li><li>Keys.so</li></ul></div>
