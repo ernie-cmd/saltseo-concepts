@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="SEO Core — платформа маркетинговой аналитики: Метрика, Директ, Вебмастер и позиции в одном дашборде руководителя с ИИ-рекомендациями.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>SEO Core</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: светлая лавандовая подложка, белые «плитки» как в продукте; фрагменты интерфейса — главные картинки страницы */
+:root{
+  --bg:#F5F5F9; --surface:#FFFFFF; --surface-2:#F6F5FB; --surface-3:#EEECF8;
+  --ink:#1D1C2B; --ink-2:#5F5E73; --ink-3:#9D9CB2;
+  --accent:#6E62EE; --accent-600:#5A4EDB; --accent-soft:#EFECFE; --accent-200:#DCD7FC;
+  --on-accent:#FFFFFF; --on-accent-2:rgba(255,255,255,.78); --accent-tile:rgba(255,255,255,.12);
+  --pink:#D4509A; --pink-soft:#FDEBF5; --blue:#3586D2; --blue-soft:#E6F1FC;
+  --green:#22A06A; --green-soft:#E2F6EB; --orange:#E1802A; --orange-soft:#FFF0E0;
+  --red:#E14F4C; --red-soft:#FDECEC; --grey:#A7A6B8;
+  --dark:#1D1C2B; --on-dark:#F5F5F9; --on-dark-2:#A9A8BF; --dark-2:#2A2940;
+  --shadow-pop:0 24px 60px -16px rgba(44,36,120,.28);
+  --r-xl:28px; --r-lg:22px; --r:18px; --r-md:14px; --r-sm:10px;
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --wrap:1240px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111019; --surface:#1A1926; --surface-2:#222132; --surface-3:#2A2840;
+  --ink:#EEEDF7; --ink-2:#B4B2CA; --ink-3:#7E7C99;
+  --accent:#8478F6; --accent-600:#9A90F8; --accent-soft:#25214A; --accent-200:#3A3470;
+  --on-accent:#FFFFFF; --on-accent-2:rgba(255,255,255,.8); --accent-tile:rgba(255,255,255,.12);
+  --pink:#E879B7; --pink-soft:#3A1E31; --blue:#5CA6EC; --blue-soft:#1A2A3D;
+  --green:#3FC48A; --green-soft:#16302A; --orange:#F09A4E; --orange-soft:#3A2817;
+  --red:#F2716E; --red-soft:#3D1D22; --grey:#6E6C86;
+  --dark:#0A0A12; --on-dark:#F5F5F9; --on-dark-2:#A9A8BF; --dark-2:#1E1D2C;
+  --shadow-pop:0 24px 60px -16px rgba(0,0,0,.6); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#111019; --surface:#1A1926; --surface-2:#222132; --surface-3:#2A2840;
+  --ink:#EEEDF7; --ink-2:#B4B2CA; --ink-3:#7E7C99;
+  --accent:#8478F6; --accent-600:#9A90F8; --accent-soft:#25214A; --accent-200:#3A3470;
+  --on-accent:#FFFFFF; --on-accent-2:rgba(255,255,255,.8); --accent-tile:rgba(255,255,255,.12);
+  --pink:#E879B7; --pink-soft:#3A1E31; --blue:#5CA6EC; --blue-soft:#1A2A3D;
+  --green:#3FC48A; --green-soft:#16302A; --orange:#F09A4E; --orange-soft:#3A2817;
+  --red:#F2716E; --red-soft:#3D1D22; --grey:#6E6C86;
+  --dark:#0A0A12; --on-dark:#F5F5F9; --on-dark-2:#A9A8BF; --dark-2:#1E1D2C;
+  --shadow-pop:0 24px 60px -16px rgba(0,0,0,.6); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{margin:0;text-wrap:balance;letter-spacing:-.03em;line-height:1.05;font-weight:800}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:10px}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:76px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+.logo-mark{width:36px;height:36px;border-radius:12px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.logo-mark .i{width:20px;height:20px}
+.nav{display:flex;gap:4px;margin-left:12px;background:var(--surface);padding:5px;border-radius:99px}
+.nav a{padding:9px 16px;border-radius:99px;font-weight:600;font-size:14.5px;color:var(--ink-2);transition:background .2s,color .2s}
+.nav a:hover{color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--accent);color:var(--on-accent)}
+.top-cta{margin-left:auto;display:flex;gap:10px;align-items:center}
+.burger{display:none;width:46px;height:46px;border-radius:50%;background:var(--surface);place-items:center}
+.mnav{display:none}
+
+/* ---------- buttons, chips ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:52px;padding:0 26px;border-radius:99px;font-weight:700;font-size:15px;transition:transform .15s ease,background .2s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{background:var(--accent-600)}
+.btn-soft{background:var(--accent-soft);color:var(--accent)}
+.btn-soft:hover{background:var(--accent-200)}
+.btn-white{background:var(--surface);color:var(--ink)}
+.btn-white:hover{background:var(--surface-3)}
+.btn-sm{height:44px;padding:0 20px;font-size:14px}
+.btn .i{width:18px;height:18px;transition:transform .2s}
+.btn:hover .i.arr{transform:translateX(3px)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap}
+.chip .i{width:13px;height:13px}
+.c-green{background:var(--green-soft);color:var(--green)}
+.c-red{background:var(--red-soft);color:var(--red)}
+.c-orange{background:var(--orange-soft);color:var(--orange)}
+.c-accent{background:var(--accent-soft);color:var(--accent)}
+.c-blue{background:var(--blue-soft);color:var(--blue)}
+.c-pink{background:var(--pink-soft);color:var(--pink)}
+.ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none}
+.ico .i{width:19px;height:19px}
+
+/* ---------- type ---------- */
+.h-hero{font-size:clamp(40px,4.9vw,72px);letter-spacing:-.045em;line-height:1}
+.h-page{font-size:clamp(38px,5.2vw,72px);letter-spacing:-.04em;line-height:1}
+.h-sec{font-size:clamp(30px,3.6vw,50px);letter-spacing:-.035em}
+.h-card{font-size:clamp(20px,1.8vw,24px);letter-spacing:-.02em;line-height:1.2}
+.lead{font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);line-height:1.5;max-width:58ch}
+.muted{color:var(--ink-2)}
+.small{font-size:13.5px;color:var(--ink-2)}
+
+/* ---------- sections ---------- */
+.page{display:none}
+.page.on{display:block}
+.sec{padding-block:clamp(72px,10vw,140px)}
+.sec-tight{padding-block:clamp(48px,6vw,80px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:32px 64px;align-items:end;margin-bottom:48px}
+.panel{background:var(--surface);border-radius:var(--r-xl)}
+.tile{background:var(--surface-2);border-radius:var(--r-md)}
+
+/* ---------- product UI fragments ---------- */
+[data-ui]{font-size:13px;line-height:1.35}
+.ui-win{background:var(--surface-3);border-radius:var(--r-xl);padding:14px;box-shadow:var(--shadow-pop)}
+.ui-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.ui-pill{background:var(--surface);border-radius:99px;padding:7px 12px;font-weight:700;font-size:12.5px;display:flex;align-items:center;gap:7px}
+.ui-av{width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:11px;font-weight:800}
+.ui-seg{display:flex;background:var(--surface);border-radius:99px;padding:3px;gap:2px}
+.ui-seg span{padding:5px 10px;border-radius:99px;font-weight:600;font-size:12px;color:var(--ink-2);white-space:nowrap}
+.ui-seg span.on{background:var(--accent);color:var(--on-accent)}
+.ui-grid{display:grid;gap:10px}
+.ui-card{background:var(--surface);border-radius:var(--r);padding:14px}
+.ui-hero{background:var(--accent);color:var(--on-accent);border-radius:var(--r-lg);padding:16px;display:grid;grid-template-columns:1fr 1.25fr;gap:12px}
+.ui-hero h4{font-size:18px;line-height:1.2;letter-spacing:-.02em;font-weight:800}
+.ui-hero .tag{display:inline-flex;align-items:center;gap:5px;background:var(--accent-tile);border-radius:8px;padding:4px 9px;font-size:11px;font-weight:800;margin-bottom:10px;letter-spacing:.02em}
+.ui-ins{display:flex;gap:10px;align-items:flex-start;background:var(--accent-tile);border-radius:12px;padding:9px 10px}
+.ui-ins b{display:block;font-size:12.5px}
+.ui-ins small{color:var(--on-accent-2);font-size:11.5px}
+.ui-ins .bx{width:26px;height:26px;border-radius:8px;background:var(--surface);color:var(--accent);display:grid;place-items:center;flex:none}
+.ui-ins .bx .i{width:14px;height:14px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpi .hd{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12.5px;margin-bottom:8px}
+.kpi .hd .ico{width:28px;height:28px;border-radius:9px}
+.kpi .hd .ico .i{width:15px;height:15px}
+.kpi .v{font-size:24px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.kpi .v small{font-size:13px;color:var(--ink-3);font-weight:700}
+.kpi .f{margin-top:8px;font-size:11.5px;color:var(--ink-2)}
+.kpi .f b{color:var(--ink)}
+.chart-card .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px}
+.chart-card h5{margin:0;font-size:14px;font-weight:800}
+.chart svg{display:block;width:100%;height:auto}
+.legend{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-2);margin-top:4px;gap:8px;flex-wrap:wrap}
+.legend b{color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{font-size:10.5px;color:var(--ink-3);font-weight:800;text-align:right;padding:6px 6px;letter-spacing:.04em}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{padding:7px 6px;text-align:right;font-weight:600;white-space:nowrap}
+.tbl tr.tot td{background:var(--surface-2);font-weight:800}
+.tbl tr.tot td:first-child{border-radius:10px 0 0 10px}
+.tbl tr.tot td:last-child{border-radius:0 10px 10px 0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.up{color:var(--green);font-size:10.5px;font-weight:800;margin-left:3px}
+.dn{color:var(--red);font-size:10.5px;font-weight:800;margin-left:3px}
+.risk{display:flex;align-items:center;gap:10px;background:var(--surface-2);border-radius:12px;padding:10px 12px}
+.risk .m{flex:1;min-width:0}
+.risk b{display:block;font-size:13px}
+.risk small{color:var(--ink-2);font-size:11.5px}
+.risk .bang{width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;font-size:12px;flex:none}
+.risk .bang.o{background:var(--orange)}
+
+/* ---------- HOME hero ---------- */
+.hero{padding-block:clamp(28px,4vw,56px) clamp(64px,8vw,110px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center}
+.hero-copy{display:flex;flex-direction:column;gap:26px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}
+.fact{background:var(--surface);border-radius:var(--r);padding:16px}
+.fact b{display:block;font-size:22px;letter-spacing:-.02em;font-weight:800}
+.fact span{font-size:13px;color:var(--ink-2)}
+.hero-ui{position:relative}
+
+/* pains */
+.pains{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:start}
+.pain-list{display:grid;gap:10px}
+.pain{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;background:var(--surface);border-radius:var(--r-lg);padding:20px 22px}
+.pain h3{font-size:18px;letter-spacing:-.015em;line-height:1.25;margin-bottom:4px}
+.pain p{color:var(--ink-2);font-size:15px}
+.statement{position:sticky;top:110px;display:flex;flex-direction:column;gap:22px}
+.statement .big{font-size:clamp(28px,3vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ba{border-radius:var(--r-lg);padding:20px}
+.ba b{display:block;font-size:15px;margin-bottom:8px}
+.ba ul{margin:0;padding-left:18px;font-size:14px;display:grid;gap:4px}
+.ba.was{background:var(--surface-3);color:var(--ink-2)}
+.ba.now{background:var(--accent);color:var(--on-accent)}
+.ba.now ul{color:var(--on-accent-2)}
+
+/* four questions (live) */
+.q-wrap{background:var(--dark);color:var(--on-dark);border-radius:clamp(28px,3vw,40px);padding:clamp(28px,4vw,56px)}
+.q-wrap .lead{color:var(--on-dark-2)}
+.q-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:36px}
+.q-timer{font-size:clamp(56px,7vw,104px);font-weight:800;letter-spacing:-.05em;line-height:.9;color:var(--accent-200)}
+:root[data-theme="dark"] .q-timer{color:var(--accent-600)}
+.q-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:16px}
+.q-tab{background:var(--dark-2);border-radius:var(--r);padding:16px 18px;text-align:left;transition:background .2s,transform .15s}
+.q-tab:hover{background:#34324d}
+.q-tab:active{transform:scale(.98)}
+.q-tab b{display:block;font-size:17px;letter-spacing:-.01em;margin-bottom:2px;color:var(--on-dark)}
+.q-tab span{font-size:13px;color:var(--on-dark-2)}
+.q-tab[aria-selected="true"]{background:var(--accent)}
+.q-tab[aria-selected="true"] span{color:var(--on-accent-2)}
+.q-stage{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:16px;align-items:stretch}
+.q-explain{background:var(--dark-2);border-radius:var(--r-lg);padding:24px;display:flex;flex-direction:column;gap:12px}
+.q-explain h3{font-size:24px;letter-spacing:-.02em;color:var(--on-dark)}
+.q-explain p{color:var(--on-dark-2);font-size:15px}
+.q-explain ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:14.5px}
+.q-explain li{display:flex;gap:10px;align-items:flex-start}
+.q-explain li .i{color:var(--accent-200);width:18px;height:18px;margin-top:2px}
+.q-view{background:var(--bg);color:var(--ink);border-radius:var(--r-lg);padding:14px;min-height:300px}
+.q-pane{display:none;animation:rise .35s ease both}
+.q-pane.on{display:grid;gap:10px}
+
+/* channels */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.split.rev>:first-child{order:2}
+.copy-col{display:flex;flex-direction:column;gap:22px}
+.ticks{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.ticks li{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;font-size:16px}
+.ticks li .ico{width:28px;height:28px;border-radius:9px}
+.ticks li .ico .i{width:15px;height:15px}
+.donuts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.donut{display:flex;gap:12px;align-items:center}
+.donut svg{width:112px;height:112px;flex:none}
+.donut ul{list-style:none;margin:0;padding:0;font-size:12px;display:grid;gap:4px;flex:1;min-width:0}
+.donut li{display:flex;justify-content:space-between;gap:6px}
+.donut li em{font-style:normal;color:var(--ink-3)}
+
+/* recommendation card */
+.rec{background:var(--surface);border-radius:var(--r-lg);padding:18px;display:grid;gap:12px}
+.rec-hd{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.prio{white-space:nowrap;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800}
+.prio i{display:inline-flex;gap:3px}
+.prio i::before{content:"";width:46px;height:8px;background:radial-gradient(circle,var(--accent) 3.5px,transparent 4px) 0 0/9.2px 8px repeat-x}
+.rec h4{font-size:19px;letter-spacing:-.02em;line-height:1.2}
+.rec p{color:var(--ink-2);font-size:13.5px}
+.rec .kw{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:12.5px;background:var(--surface-2);border-radius:12px;padding:12px}
+.rec .kw span:nth-child(even){font-weight:800;text-align:right}
+.rec .acts{display:flex;gap:8px;flex-wrap:wrap}
+.rec .acts span{padding:8px 14px;border-radius:99px;font-weight:700;font-size:12.5px;background:var(--surface-2)}
+.rec .acts span.p{background:var(--accent);color:var(--on-accent)}
+
+/* sources */
+.sources{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.src{background:var(--surface);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:14px;min-height:178px}
+.src .logo-b{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:16px}
+.src b{font-size:16px;letter-spacing:-.01em}
+.src p{font-size:13.5px;color:var(--ink-2);margin-top:-8px}
+.src .st{margin-top:auto}
+
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
+.plan{background:var(--surface);border-radius:var(--r-xl);padding:28px;display:flex;flex-direction:column;gap:18px}
+.plan.hot{background:var(--accent);color:var(--on-accent)}
+.plan .nm{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:15px;letter-spacing:.06em}
+.plan .pr{font-size:clamp(38px,3.6vw,50px);font-weight:800;letter-spacing:-.04em;line-height:1}
+.plan .pr small{font-size:16px;font-weight:700;letter-spacing:0;color:var(--ink-2)}
+.plan.hot .pr small,.plan.hot .sub,.plan.hot .yr{color:var(--on-accent-2)}
+.plan .sub{color:var(--ink-2);font-size:15px}
+.plan .yr{font-size:13px;color:var(--ink-2);min-height:20px}
+.plan ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14.5px}
+.plan li{display:flex;gap:10px;align-items:flex-start}
+.plan li .i{width:18px;height:18px;color:var(--green);margin-top:2px}
+.plan.hot li .i{color:var(--on-accent)}
+.plan .lim{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.plan .lim div{background:var(--surface-2);border-radius:12px;padding:10px 12px;font-size:12.5px;color:var(--ink-2)}
+.plan.hot .lim div{background:var(--accent-tile);color:var(--on-accent-2)}
+.plan .lim b{display:block;font-size:17px;color:var(--ink)}
+.plan.hot .lim b{color:var(--on-accent)}
+.plan .btn{margin-top:auto}
+.plan.hot .btn-primary{background:var(--surface);color:var(--accent)}
+.plan.hot .btn-primary:hover{background:var(--accent-soft)}
+.badge-pop{background:var(--accent-tile);padding:5px 10px;border-radius:8px;font-size:11.5px;letter-spacing:.02em}
+
+/* CTA band */
+.cta-band{background:var(--accent);color:var(--on-accent);border-radius:clamp(28px,3vw,40px);padding:clamp(32px,5vw,72px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:32px;align-items:end}
+.cta-band .h-sec{color:var(--on-accent)}
+.cta-band p{color:var(--on-accent-2);font-size:17px;max-width:52ch}
+.cta-band .acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.cta-band .btn-white{color:var(--accent)}
+.cta-band .btn-ghost{background:var(--accent-tile);color:var(--on-accent)}
+
+/* page headers */
+.ph{padding-block:clamp(36px,5vw,72px) clamp(40px,5vw,64px)}
+.ph-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px 56px;align-items:end}
+.crumb{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink-2);font-weight:600;margin-bottom:20px}
+.crumb a:hover{color:var(--accent)}
+
+/* features page */
+.feat{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:center;padding-block:clamp(48px,6vw,88px)}
+.feat.rev>:first-child{order:2}
+.feat .copy-col h2{font-size:clamp(28px,3vw,42px);letter-spacing:-.035em}
+.feat .stage{background:var(--surface-3);border-radius:var(--r-xl);padding:clamp(14px,2vw,24px)}
+.feat-nav{display:flex;gap:8px;flex-wrap:wrap}
+.feat-nav a{background:var(--surface);padding:10px 16px;border-radius:99px;font-weight:700;font-size:14px;transition:background .2s}
+.feat-nav a:hover{background:var(--accent-soft);color:var(--accent)}
+.mini-list{display:grid;gap:8px}
+.pos-row{display:grid;grid-template-columns:1fr repeat(3,auto);gap:14px;align-items:center;background:var(--surface);border-radius:12px;padding:10px 12px;font-size:12.5px}
+.pos-row b{font-weight:700}
+.bars{display:flex;align-items:flex-end;gap:6px;height:120px}
+.bars div{flex:1;border-radius:6px 6px 3px 3px;background:var(--accent-200)}
+.bars div.f{background:var(--accent)}
+.ai-mode{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ai-mode div{background:var(--surface);border-radius:var(--r);padding:14px;font-size:12.5px;color:var(--ink-2)}
+.ai-mode div b{display:block;color:var(--ink);font-size:14px;margin-bottom:4px}
+.ai-mode div.on{background:var(--accent);color:var(--on-accent-2)}
+.ai-mode div.on b{color:var(--on-accent)}
+
+/* CMO page */
+.persona{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.persona .panel{padding:clamp(24px,3vw,36px)}
+.persona h3{font-size:22px;letter-spacing:-.02em;margin-bottom:16px}
+.persona dl{margin:0;display:grid;gap:14px}
+.persona dt{font-weight:800;font-size:15px}
+.persona dd{margin:2px 0 0;color:var(--ink-2);font-size:15px}
+.qtable{width:100%;border-collapse:separate;border-spacing:0 8px}
+.qtable td{background:var(--surface);padding:22px 24px;vertical-align:top;font-size:16px}
+.qtable td:first-child{border-radius:var(--r-lg) 0 0 var(--r-lg);font-weight:800;font-size:clamp(20px,2vw,26px);letter-spacing:-.02em;width:34%}
+.qtable td:last-child{border-radius:0 var(--r-lg) var(--r-lg) 0;color:var(--ink-2)}
+.need{background:var(--dark);color:var(--on-dark);border-radius:clamp(28px,3vw,40px);padding:clamp(32px,5vw,72px);display:grid;gap:24px}
+.need p.q{font-size:clamp(24px,2.8vw,36px);font-weight:700;letter-spacing:-.025em;line-height:1.2;max-width:30ch}
+.need .small{color:var(--on-dark-2)}
+.value3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.value3 .v{border-radius:var(--r-xl);padding:28px;display:flex;flex-direction:column;gap:12px;min-height:240px}
+.value3 .v h3{font-size:30px;letter-spacing:-.03em}
+.value3 .v p{font-size:15.5px}
+.v1{background:var(--accent-soft)} .v1 h3{color:var(--accent)}
+.v2{background:var(--blue-soft)} .v2 h3{color:var(--blue)}
+.v3{background:var(--green-soft)} .v3 h3{color:var(--green)}
+.v1 p,.v2 p,.v3 p{color:var(--ink)}
+.goals{columns:2;column-gap:40px;margin:0;padding:0;list-style:none}
+.goals li{break-inside:avoid;display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px 0;font-size:17px;font-weight:600}
+.goals li .i{color:var(--accent);margin-top:3px}
+
+/* pricing page */
+.bill{display:inline-flex;background:var(--surface);border-radius:99px;padding:5px;gap:4px}
+.bill button{padding:10px 18px;border-radius:99px;font-weight:700;font-size:14.5px;color:var(--ink-2);display:flex;gap:8px;align-items:center;transition:background .2s}
+.bill button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.bill .chip{padding:2px 7px}
+.bill button[aria-pressed="true"] .chip{background:var(--accent-tile);color:var(--on-accent)}
+.cmp-wrap{background:var(--surface);border-radius:var(--r-xl);padding:clamp(12px,2vw,24px);overflow-x:auto}
+.cmp{width:100%;border-collapse:collapse;min-width:560px;font-size:15px}
+.cmp th{text-align:center;padding:16px 12px;font-size:15px;font-weight:800}
+.cmp th:first-child{text-align:left}
+.cmp thead th{position:sticky;top:0;background:var(--surface)}
+.cmp thead th.hot{color:var(--accent)}
+.cmp td{padding:12px;text-align:center}
+.cmp td:first-child{text-align:left;color:var(--ink)}
+.cmp tbody tr:nth-child(even) td{background:var(--surface-2)}
+.cmp tbody tr:nth-child(even) td:first-child{border-radius:12px 0 0 12px}
+.cmp tbody tr:nth-child(even) td:last-child{border-radius:0 12px 12px 0}
+.cmp tr.grp td{background:none!important;font-weight:800;font-size:18px;padding-top:28px;letter-spacing:-.01em}
+.cmp .yes{color:var(--green)} .cmp .no{color:var(--ink-3)}
+.cmp .yes .i{width:20px;height:20px}
+.terms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.term{background:var(--surface);border-radius:var(--r-lg);padding:22px}
+.term b{display:block;font-size:26px;letter-spacing:-.03em;font-weight:800;margin-bottom:4px}
+.term span{font-size:14px;color:var(--ink-2)}
+.faq{display:grid;gap:8px}
+.faq details{background:var(--surface);border-radius:var(--r-lg);padding:0 24px}
+.faq summary{list-style:none;cursor:pointer;padding:22px 0;font-weight:800;font-size:18px;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:16px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pl{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none;transition:transform .25s}
+.faq details[open] summary .pl{transform:rotate(45deg)}
+.faq details p{padding:0 0 22px;color:var(--ink-2);max-width:72ch}
+
+/* partners */
+.prog{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.prog .panel{padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:20px}
+.prog .panel.ac{background:var(--accent);color:var(--on-accent)}
+.prog .big{font-size:clamp(48px,5.4vw,80px);font-weight:800;letter-spacing:-.05em;line-height:.95}
+.prog .ac .muted{color:var(--on-accent-2)}
+.kv{display:grid;gap:8px}
+.kv div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;background:var(--surface-2);border-radius:12px;padding:12px 14px;font-size:14.5px}
+.kv div span:first-child{color:var(--ink-2)}
+.kv div span:last-child{font-weight:700}
+.ac .kv div{background:var(--accent-tile)}
+.ac .kv div span:first-child{color:var(--on-accent-2)}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.calc .panel{padding:clamp(24px,3vw,36px)}
+.stepper{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:var(--surface-2);border-radius:var(--r);padding:14px 16px}
+.stepper b{display:block;font-size:16px}
+.stepper small{color:var(--ink-2);font-size:13px}
+.stepper .ctl{display:flex;align-items:center;gap:6px;background:var(--surface);border-radius:99px;padding:4px}
+.stepper .ctl button{width:36px;height:36px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:20px;font-weight:700;line-height:1;transition:transform .12s}
+.stepper .ctl button:active{transform:scale(.9)}
+.stepper output{min-width:34px;text-align:center;font-weight:800;font-size:18px}
+.calc-res{background:var(--dark)!important;color:var(--on-dark);display:flex;flex-direction:column;gap:18px}
+.calc-res .big{font-size:clamp(46px,5vw,72px);font-weight:800;letter-spacing:-.05em;line-height:1}
+.calc-res .muted{color:var(--on-dark-2)}
+.calc-res .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.calc-res .row div{background:var(--dark-2);border-radius:var(--r);padding:14px}
+.calc-res .row b{display:block;font-size:24px;letter-spacing:-.02em}
+.calc-res .row span{font-size:13px;color:var(--on-dark-2)}
+.status{display:flex;gap:10px;align-items:flex-start;border-radius:var(--r);padding:14px;font-size:14.5px;font-weight:600}
+.status.ok{background:var(--green-soft);color:var(--green)}
+.status.wait{background:var(--orange-soft);color:var(--orange)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 40px;margin:0;padding:0;list-style:none}
+.rules li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:16px 0;font-size:16px}
+.rules li .i{color:var(--accent);margin-top:3px}
+
+/* demo form */
+.form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.form-card{background:var(--surface);border-radius:var(--r-xl);padding:clamp(24px,3vw,40px)}
+.fld{display:flex;flex-direction:column;gap:7px}
+.fld label{font-weight:700;font-size:13.5px}
+.fld input,.fld select,.fld textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);border:2px solid transparent;border-radius:14px;padding:13px 16px;outline:none;transition:border-color .2s,background .2s;width:100%}
+.fld textarea{resize:vertical;min-height:96px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--accent);background:var(--surface)}
+.fld input::placeholder,.fld textarea::placeholder{color:var(--ink-3)}
+.fld .err{color:var(--red);font-size:12.5px;min-height:16px}
+.fld.bad input{border-color:var(--red)}
+.full{grid-column:1/-1}
+.done{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.done .ico{width:56px;height:56px;border-radius:18px}
+.steps-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.steps-list li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--surface);border-radius:var(--r-lg);padding:18px 20px;counter-increment:s}
+.steps-list li::before{content:counter(s);width:34px;height:34px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800}
+.steps-list b{display:block;font-size:16.5px}
+.steps-list span{color:var(--ink-2);font-size:14.5px}
+
+/* footer */
+.foot{padding-block:clamp(64px,8vw,110px) 40px}
+.foot-word{font-size:clamp(64px,15vw,220px);font-weight:800;letter-spacing:-.06em;line-height:.85;color:var(--accent);margin-bottom:40px}
+.foot-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:32px;padding-bottom:40px}
+.foot-grid h4{font-size:14px;letter-spacing:0;margin-bottom:12px;color:var(--ink-3);font-weight:700}
+.foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-weight:600}
+.foot-grid a:hover{color:var(--accent)}
+.foot-bot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.theme-t{justify-self:start;display:inline-flex;align-items:center;gap:8px;background:var(--surface);border-radius:99px;padding:8px 14px;font-weight:700;font-size:13px;color:var(--ink-2)}
+
+/* motion */
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rv{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+.js .io{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.js .io.pre{transform:translateY(28px)}
+.float{animation:float 7s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.draw path.ln{stroke-dasharray:1400;stroke-dashoffset:1400;animation:dr 1.8s .3s ease forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+.pulse{animation:pl 2s ease-in-out infinite}
+@keyframes pl{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.draw path.ln{stroke-dashoffset:0}.js .io.pre{opacity:1;transform:none}}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .sources{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .terms{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:980px){
+  .nav,.top-cta .btn-soft{display:none}
+  .burger{display:grid}
+  .top-cta{gap:8px}
+  .mnav.open{display:block;position:fixed;inset:calc(76px + env(safe-area-inset-top,0px)) 0 0;background:var(--bg);z-index:49;padding:16px max(20px,env(safe-area-inset-left,0px)) 32px max(20px,env(safe-area-inset-right,0px));overflow:auto}
+  .mnav a{display:block;font-size:30px;font-weight:800;letter-spacing:-.03em;padding:12px 0}
+  .mnav a[aria-current="page"]{color:var(--accent)}
+  .mnav .btn{margin-top:20px;width:100%;font-size:16px;letter-spacing:0}
+  .hero-grid,.pains,.split,.feat,.ph-grid,.sec-head,.cta-band,.q-stage,.prog,.calc,.persona{grid-template-columns:minmax(0,1fr)}
+  .split.rev>:first-child,.feat.rev>:first-child{order:0}
+  .statement{position:static}
+  .q-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plans{grid-template-columns:minmax(0,1fr)}
+  .value3{grid-template-columns:minmax(0,1fr)}
+  .value3 .v{min-height:0}
+  .cta-band .acts{justify-content:flex-start}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .top .wrap{height:68px}
+  .mnav.open{inset:calc(68px + env(safe-area-inset-top,0px)) 0 0}
+  .top-cta .btn-primary{height:42px;padding:0 16px;font-size:13.5px}
+  .facts{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .facts .fact:last-child{grid-column:1/-1}
+  .kpi-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ui-hero{grid-template-columns:minmax(0,1fr)}
+  .before-after,.donuts,.form-grid,.rules,.ai-mode{grid-template-columns:minmax(0,1fr)}
+  .sources{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .terms{grid-template-columns:minmax(0,1fr)}
+  .goals{columns:1}
+  .qtable td{display:block;width:auto!important;border-radius:0!important}
+  .qtable tr td:first-child{border-radius:var(--r-lg) var(--r-lg) 0 0!important;padding-bottom:6px}
+  .qtable tr td:last-child{border-radius:0 0 var(--r-lg) var(--r-lg)!important;padding-top:0}
+  .q-top{grid-template-columns:minmax(0,1fr)}
+  .hide-sm{display:none}
+  .pos-row{grid-template-columns:1fr auto auto}
+  .pos-row .hide-sm{display:none}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .calc-res .row{grid-template-columns:minmax(0,1fr)}
+  .btn{height:50px}
+  .hero-actions .btn{flex:1 1 100%}
+  .q-pane .kpi .v{font-size:19px}
+  .tbl{font-size:12px}
+}
+@media (max-width:440px){.top-cta .btn-primary{display:none}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home" data-go="home" aria-label="SEO Core — на главную"><span class="logo-mark"><svg class="i"><use href="#i-sparkle"/></svg></span>SEO Core</a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#features" data-go="features">Возможности</a>
+      <a href="#cmo" data-go="cmo">Для CMO</a>
+      <a href="#pricing" data-go="pricing">Тарифы</a>
+      <a href="#partners" data-go="partners">Партнёрам</a>
+    </nav>
+    <div class="top-cta">
+      <a class="btn btn-soft btn-sm" href="https://konseo.space/login" target="_blank" rel="noopener">Войти</a>
+      <a class="btn btn-primary btn-sm" href="#demo" data-go="demo">Попробовать бесплатно</a>
+      <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mnav"><svg class="i"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="mnav" id="mnav">
+  <a href="#home" data-go="home">Главная</a>
+  <a href="#features" data-go="features">Возможности</a>
+  <a href="#cmo" data-go="cmo">Для CMO</a>
+  <a href="#pricing" data-go="pricing">Тарифы</a>
+  <a href="#partners" data-go="partners">Партнёрам</a>
+  <a class="btn btn-primary" href="#demo" data-go="demo">Попробовать 14 дней бесплатно</a>
+  <a class="btn btn-soft" href="https://konseo.space/login" target="_blank" rel="noopener">Войти в кабинет</a>
+</div>
+
+<main>
+<!-- =================================== HOME =================================== -->
+<section class="page" data-page="home" aria-label="Главная">
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1 class="h-hero rv">Весь маркетинг на&nbsp;одном экране</h1>
+        <p class="lead rv" style="animation-delay:.08s">SEO Core собирает Метрику, Директ, Вебмастер и позиции в Яндексе и Google в один дашборд руководителя. Сам находит отклонения, объясняет причины и говорит, что делать для роста заявок.</p>
+        <div class="hero-actions rv" style="animation-delay:.16s">
+          <a class="btn btn-primary" href="#demo" data-go="demo">Попробовать 14 дней бесплатно <svg class="i arr"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-white" href="#pricing" data-go="pricing">Тарифы от 4 990 ₽</a>
+        </div>
+        <div class="facts rv" style="animation-delay:.24s">
+          <div class="fact"><b>30 секунд</b><span>чтобы понять, что происходит с маркетингом</span></div>
+          <div class="fact"><b>14 дней</b><span>бесплатного доступа для проверки на ваших данных</span></div>
+          <div class="fact"><b>Яндекс и Google</b><span>позиции по регионам и конкуренты</span></div>
+        </div>
+      </div>
+
+      <div class="hero-ui rv" style="animation-delay:.2s">
+        <div class="ui-win float" data-ui aria-label="Дашборд SEO Core на демо-данных">
+          <div class="ui-bar">
+            <span class="ui-pill"><span class="ui-av">D</span>demo-company.ru</span>
+            <span class="ui-seg"><span class="on">Текущий месяц</span><span>Прошлый</span><span class="hide-sm">Квартал</span></span>
+            <span class="ui-pill" style="margin-left:auto">Демо-данные</span>
+          </div>
+          <div class="ui-grid">
+            <div class="ui-hero">
+              <div>
+                <span class="tag"><svg class="i" style="width:12px;height:12px"><use href="#i-check"/></svg>В ПЛАНЕ</span>
+                <h4>Месяц закроется на 138% плана по заявкам</h4>
+              </div>
+              <div class="ui-grid" style="gap:6px">
+                <div class="ui-ins"><span class="bx"><svg class="i"><use href="#i-flag"/></svg></span><div><b>Заявки из «Прямых заходов» выросли в 10 раз</b><small>Проверьте цели Метрики и спам в заявках</small></div></div>
+                <div class="ui-ins"><span class="bx"><svg class="i"><use href="#i-check"/></svg></span><div><b>Трафик растёт</b><small>Визиты +33,5%, поиск +5,9%</small></div></div>
+              </div>
+            </div>
+            <div class="kpi-row">
+              <div class="ui-card kpi"><div class="hd"><span class="ico c-blue"><svg class="i"><use href="#i-users"/></svg></span>Визиты</div><div class="v num">25 189</div><span class="chip c-green"><svg class="i"><use href="#i-up"/></svg>+33,5%</span><div class="f">Прогноз <b class="num">31 477</b></div></div>
+              <div class="ui-card kpi"><div class="hd"><span class="ico c-accent"><svg class="i"><use href="#i-target"/></svg></span>Заявки</div><div class="v num">856</div><span class="chip c-green"><svg class="i"><use href="#i-up"/></svg>+103,3%</span><div class="f">Прогноз <b class="num">1 005</b></div></div>
+              <div class="ui-card kpi"><div class="hd"><span class="ico c-green"><svg class="i"><use href="#i-trend"/></svg></span>Конверсия</div><div class="v num">3,40<small>%</small></div><span class="chip c-green"><svg class="i"><use href="#i-up"/></svg>+1,17 п.п.</span><div class="f">Цель <b>2,3%</b></div></div>
+              <div class="ui-card kpi"><div class="hd"><span class="ico c-pink"><svg class="i"><use href="#i-zap"/></svg></span>Реклама</div><div class="v num">11 993</div><span class="chip c-green"><svg class="i"><use href="#i-up"/></svg>+32%</span><div class="f">визитов из Директа</div></div>
+            </div>
+            <div class="ui-card chart-card">
+              <div class="hd"><h5>Динамика и прогноз</h5><span class="ui-seg"><span class="on">Визиты</span><span>Заявки</span></span></div>
+              <div class="chart draw" data-chart="hero"></div>
+              <div class="legend"><span>— Факт &nbsp; ┅ Прогноз</span><span>К 31 октября <b class="num">31 477</b> визитов</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- pains -->
+  <div class="sec" style="padding-top:0">
+    <div class="wrap pains">
+      <div class="statement io">
+        <h2 class="h-sec">Отчёты показывают цифры. SEO Core объясняет их.</h2>
+        <p class="lead">Данные лежат в разных системах, подрядчики присылают свои отчёты, а причины просадки руководитель ищет сам. Мы сводим всё в одну картину и сразу показываем, где бизнес теряет заявки.</p>
+        <div class="before-after">
+          <div class="ba was"><b>Как обычно</b><ul><li>Метрика, Директ и позиции в разных вкладках</li><li>Отчёты подрядчиков без выводов</li><li>Часы на сравнение периодов</li></ul></div>
+          <div class="ba now"><b>С SEO Core</b><ul><li>Один дашборд по всем каналам</li><li>Аномалии с вероятной причиной</li><li>Задачи с приоритетом и эффектом</li></ul></div>
+        </div>
+      </div>
+      <div class="pain-list">
+        <div class="pain io"><span class="ico c-red"><svg class="i"><use href="#i-eye"/></svg></span><div><h3>Непонятно, какой канал приводит клиентов</h3><p>Одни каналы дают заявки, другие только посещаемость. Без сквозного взгляда бюджет делится на ощущениях.</p></div></div>
+        <div class="pain io"><span class="ico c-orange"><svg class="i"><use href="#i-pie"/></svg></span><div><h3>Неясная структура трафика</h3><p>Сложно отделить брендовый спрос от небрендового и оценить вклад SEO, рекламы и публикаций на внешних площадках.</p></div></div>
+        <div class="pain io"><span class="ico c-accent"><svg class="i"><use href="#i-scale"/></svg></span><div><h3>Нет объективной оценки SEO и подрядчиков</h3><p>Оправданы ли вложения в продвижение и как работает агентство, приходится выяснять по их же отчётам.</p></div></div>
+        <div class="pain io"><span class="ico c-blue"><svg class="i"><use href="#i-alert"/></svg></span><div><h3>Просадку замечают слишком поздно</h3><p>Вчера упали трафик и заявки. Это колебание, сезонность или проблема? Ответ появляется через неделю ручного анализа.</p></div></div>
+        <div class="pain io"><span class="ico c-pink"><svg class="i"><use href="#i-bulb"/></svg></span><div><h3>Нет конкретных рекомендаций</h3><p>Цифр много, но никто не говорит, что произошло, почему и какие действия дадут рост.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 questions live -->
+  <div class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="q-wrap io">
+        <div class="q-top">
+          <div style="display:grid;gap:14px">
+            <h2 class="h-sec">Четыре ответа за полминуты</h2>
+            <p class="lead">Директор по маркетингу открывает дашборд и сразу получает ответы на главные вопросы. Нажмите на вопрос и посмотрите, что показывает система.</p>
+          </div>
+          <div class="q-timer num" aria-hidden="true">0:30</div>
+        </div>
+        <div class="q-tabs" role="tablist" aria-label="Вопросы руководителя">
+          <button class="q-tab" role="tab" id="qt0" aria-selected="true" aria-controls="qp0" data-q="0"><b>Что происходит?</b><span>Трафик, заявки, конверсия</span></button>
+          <button class="q-tab" role="tab" id="qt1" aria-selected="false" aria-controls="qp1" data-q="1"><b>Это нормально?</b><span>Сравнение с ожиданием</span></button>
+          <button class="q-tab" role="tab" id="qt2" aria-selected="false" aria-controls="qp2" data-q="2"><b>Почему?</b><span>Каналы и страницы</span></button>
+          <button class="q-tab" role="tab" id="qt3" aria-selected="false" aria-controls="qp3" data-q="3"><b>Что делать?</b><span>Задачи с приоритетом</span></button>
+        </div>
+        <div class="q-stage">
+          <div class="q-explain" id="qx">
+            <h3>Что происходит?</h3>
+            <p>Ключевые показатели месяца и их динамика к прошлому периоду, с прогнозом на конец месяца.</p>
+            <ul><li><svg class="i"><use href="#i-check"/></svg>Визиты, заявки и конверсия сайта</li><li><svg class="i"><use href="#i-check"/></svg>Прогноз и процент выполнения плана</li><li><svg class="i"><use href="#i-check"/></svg>SEO-показатели: топ-3, топ-10, средняя позиция</li></ul>
+          </div>
+          <div class="q-view" data-ui>
+            <div class="q-pane on" id="qp0" role="tabpanel" aria-labelledby="qt0">
+              <div class="kpi-row" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+                <div class="ui-card kpi"><div class="hd">Визиты</div><div class="v num">25 189</div><span class="chip c-green">+33,5%</span></div>
+                <div class="ui-card kpi"><div class="hd">Заявки</div><div class="v num">856</div><span class="chip c-green">+103,3%</span></div>
+                <div class="ui-card kpi"><div class="hd">Конверсия</div><div class="v num">3,40%</div><span class="chip c-green">+1,17 п.п.</span></div>
+              </div>
+              <div class="ui-card"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><b>SEO</b><span class="small">к прошлому срезу</span></div>
+                <div class="kpi-row">
+                  <div class="tile" style="padding:10px"><div class="small">В топ-3</div><b class="num" style="font-size:18px">363</b> <span class="up">+96</span></div>
+                  <div class="tile" style="padding:10px"><div class="small">В топ-10</div><b class="num" style="font-size:18px">1 262</b> <span class="up">+287</span></div>
+                  <div class="tile" style="padding:10px"><div class="small">Ср. позиция</div><b class="num" style="font-size:18px">19,6</b></div>
+                  <div class="tile" style="padding:10px"><div class="small">Ушли из топ-10</div><b class="num" style="font-size:18px">38</b></div>
+                </div>
+              </div>
+            </div>
+            <div class="q-pane" id="qp1" role="tabpanel" aria-labelledby="qt1">
+              <div class="ui-card chart-card"><div class="hd"><h5>Заявки: факт и ожидание</h5><span class="chip c-green">в коридоре нормы</span></div><div class="chart" data-chart="band"></div><div class="legend"><span>Коридор учитывает сезонность и день недели</span><span>План <b>726</b> · прогноз <b>1 005</b></span></div></div>
+              <div class="ui-card" style="display:flex;gap:12px;align-items:center"><span class="ico c-orange"><svg class="i"><use href="#i-calendar"/></svg></span><div><b>Сезонный рост +35,7%</b><div class="small">Подъём соответствует прошлым годам. Действий не требуется.</div></div></div>
+            </div>
+            <div class="q-pane" id="qp2" role="tabpanel" aria-labelledby="qt2">
+              <div class="ui-card"><b style="display:block;margin-bottom:8px">Каналы <span class="small">изменение к прошлому месяцу</span></b>
+                <div style="overflow-x:auto"><table class="tbl num"><thead><tr><th>КАНАЛ</th><th>ВИЗИТЫ</th><th>ЗАЯВКИ</th><th>КОНВ.</th></tr></thead><tbody>
+                <tr><td><span class="dot" style="background:var(--accent)"></span>Поиск</td><td>7 240<span class="up">+6%</span></td><td>125<span class="dn">−5%</span></td><td>1,73%</td></tr>
+                <tr><td><span class="dot" style="background:var(--pink)"></span>Реклама</td><td>11 993<span class="up">+32%</span></td><td>212<span class="dn">−5%</span></td><td>1,77%</td></tr>
+                <tr><td><span class="dot" style="background:var(--blue)"></span>Прямые</td><td>4 450<span class="up">+159%</span></td><td>510<span class="up">+881%</span></td><td>11,46%</td></tr>
+                </tbody></table></div></div>
+              <div class="risk"><span class="bang">!</span><div class="m"><b>Просадка: /catalog/delivery/</b><small>Потеряно 26 визитов и 5 заявок. Проверьте страницу и её позиции</small></div><span class="chip c-red">ВЫСОКИЙ</span></div>
+            </div>
+            <div class="q-pane" id="qp3" role="tabpanel" aria-labelledby="qt3">
+              <div class="rec" style="background:var(--surface)">
+                <div class="rec-hd"><span class="chip c-accent"><svg class="i"><use href="#i-file"/></svg>СОЗДАТЬ СТРАНИЦУ</span><span class="prio">Приоритет 3 <i></i></span></div>
+                <h4>Аренда оборудования для офиса</h4>
+                <p>8 400 показов в месяц, у 3 из 12 конкурентов есть отдельная страница, лучший на 2 месте. У вас такой страницы нет.</p>
+                <div class="acts"><span class="p">В работу</span><span>Не подходит</span><span>Уже есть</span></div>
+              </div>
+              <div class="risk" style="background:var(--surface)"><span class="bang o">!</span><div class="m"><b>Проверьте цели Метрики</b><small>+458 заявок из «Прямых заходов» похожи на спам или дубль цели</small></div><span class="chip c-orange">СРЕДНИЙ</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- channels -->
+  <div class="sec" style="padding-top:0">
+    <div class="wrap split">
+      <div class="copy-col io">
+        <h2 class="h-sec">Видно, какой канал приносит заявки, а&nbsp;какой&nbsp;только визиты</h2>
+        <p class="lead">Источники трафика и обращений рядом: поиск, реклама, прямые заходы, внешние площадки. Конверсия и цена заявки по каждому каналу без ручных выгрузок.</p>
+        <ul class="ticks">
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Структура трафика по визитам и по обращениям</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Стоимость обращения из Яндекс Директа</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Изменение к прошлому периоду по каждому каналу</li>
+        </ul>
+      </div>
+      <div class="ui-win io" data-ui style="box-shadow:none">
+        <div class="ui-card" style="margin-bottom:10px">
+          <b style="display:block;margin-bottom:12px">Источники <span class="small">визиты и заявки</span></b>
+          <div class="donuts">
+            <div class="donut"><svg viewBox="0 0 120 120" data-donut="29,48,18,5" data-total="25 189" data-lbl="визитов"></svg><ul class="num"><li><span><span class="dot" style="background:var(--accent)"></span>Поиск</span><em>29%</em></li><li><span><span class="dot" style="background:var(--pink)"></span>Реклама</span><em>48%</em></li><li><span><span class="dot" style="background:var(--blue)"></span>Прямые</span><em>18%</em></li><li><span><span class="dot" style="background:var(--grey)"></span>Другое</span><em>5%</em></li></ul></div>
+            <div class="donut"><svg viewBox="0 0 120 120" data-donut="15,25,59,1" data-total="856" data-lbl="заявок"></svg><ul class="num"><li><span><span class="dot" style="background:var(--accent)"></span>Поиск</span><em>15%</em></li><li><span><span class="dot" style="background:var(--pink)"></span>Реклама</span><em>25%</em></li><li><span><span class="dot" style="background:var(--blue)"></span>Прямые</span><em>59%</em></li><li><span><span class="dot" style="background:var(--grey)"></span>Другое</span><em>1%</em></li></ul></div>
+          </div>
+        </div>
+        <div class="ui-card" style="overflow-x:auto">
+          <table class="tbl num"><thead><tr><th>КАНАЛ</th><th>ВИЗИТЫ</th><th>ЗАЯВКИ</th><th>КОНВЕРСИЯ</th><th class="hide-sm">ЦЕНА ЗАЯВКИ</th></tr></thead><tbody>
+          <tr><td><span class="dot" style="background:var(--accent)"></span>Поиск</td><td>7 240<span class="up">+6%</span></td><td>125<span class="dn">−5%</span></td><td>1,73%</td><td class="hide-sm">—</td></tr>
+          <tr><td><span class="dot" style="background:var(--pink)"></span>Реклама</td><td>11 993<span class="up">+32%</span></td><td>212<span class="dn">−5%</span></td><td>1,77%</td><td class="hide-sm">1 840 ₽</td></tr>
+          <tr><td><span class="dot" style="background:var(--blue)"></span>Прямые</td><td>4 450<span class="up">+159%</span></td><td>510<span class="up">+881%</span></td><td>11,46%</td><td class="hide-sm">—</td></tr>
+          <tr><td><span class="dot" style="background:var(--grey)"></span>Другое</td><td>1 506<span class="up">+24%</span></td><td>9<span class="dn">−31%</span></td><td>0,60%</td><td class="hide-sm">—</td></tr>
+          <tr class="tot"><td>Всего</td><td>25 189<span class="up">+34%</span></td><td>856<span class="up">+103%</span></td><td>3,40%</td><td class="hide-sm">—</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- recommendations -->
+  <div class="sec" style="padding-top:0">
+    <div class="wrap split rev">
+      <div class="copy-col io">
+        <h2 class="h-sec">ИИ подсказывает, что сделать, и&nbsp;объясняет почему</h2>
+        <p class="lead">Каждая рекомендация опирается на спрос, позиции конкурентов и ваши страницы. Задача приходит с приоритетом и ожидаемым эффектом, а отклонённые темы больше не повторяются.</p>
+        <ul class="ticks">
+          <li><span class="ico c-green"><svg class="i"><use href="#i-check"/></svg></span>Создать страницу, написать статью или доработать существующую</li>
+          <li><span class="ico c-green"><svg class="i"><use href="#i-check"/></svg></span>Запросы с частотой и конкуренты в выдаче как доказательство</li>
+          <li><span class="ico c-green"><svg class="i"><use href="#i-check"/></svg></span>Выгрузка задач в Excel для команды или подрядчика</li>
+        </ul>
+        <p class="small">Оценка эффекта прогнозная и не является гарантией результата.</p>
+      </div>
+      <div class="ui-win io" data-ui style="box-shadow:none">
+        <div class="rec">
+          <div class="rec-hd"><span class="chip c-accent"><svg class="i"><use href="#i-file"/></svg>ДОРАБОТАТЬ СТРАНИЦУ</span><span class="prio">Приоритет 3 <i></i></span></div>
+          <h4>Оборудование для кофейни под ключ</h4>
+          <p>Запрос даёт 5 120 показов в месяц, тему ведут 2 из 12 конкурентов, на 1 и 3 местах. Ваша страница проигрывает им: ей не хватает блока с комплектами и ценами.</p>
+          <div class="kw num">
+            <span>оборудование для кофейни</span><span>5 120</span>
+            <span>оборудование для кофейни под ключ</span><span>1 340</span>
+            <span>комплект для кофейни цена</span><span>610</span>
+            <span>что нужно для открытия кофейни</span><span>480</span>
+          </div>
+          <div class="acts"><span class="p">В работу</span><span>Не подходит</span><span>Такая страница уже есть</span></div>
+        </div>
+        <p class="small" style="margin-top:10px">Пример карточки на демо-проекте</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- sources -->
+  <div class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head io">
+        <h2 class="h-sec">Подключите данные, которые уже есть</h2>
+        <p class="lead">Доступы выдаются через официальные API. Данные обновляются автоматически, ничего выгружать вручную не нужно.</p>
+      </div>
+      <div class="sources">
+        <div class="src io"><span class="logo-b c-red">Я</span><b>Яндекс Метрика</b><p>Визиты, источники, цели и конверсия</p><span class="chip c-green st">Все тарифы</span></div>
+        <div class="src io"><span class="logo-b c-orange">Я</span><b>Яндекс Вебмастер</b><p>Индексация, запросы и состояние сайта</p><span class="chip c-green st">Все тарифы</span></div>
+        <div class="src io"><span class="logo-b c-blue">Д</span><b>Яндекс Директ</b><p>Расходы, кампании и цена обращения</p><span class="chip c-accent st">Профи и Бизнес</span></div>
+        <div class="src io"><span class="logo-b c-accent">P</span><b>Позиции</b><p>Яндекс и Google по выбранному региону</p><span class="chip c-green st">Все тарифы</span></div>
+        <div class="src io"><span class="logo-b c-pink">K</span><b>Keys.so</b><p>Видимость и запросы конкурентов</p><span class="chip c-accent st">Профи и Бизнес</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- plans teaser -->
+  <div class="sec" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head io">
+        <h2 class="h-sec">Три тарифа под зрелость маркетинга</h2>
+        <p class="lead">От базового контроля сайта до управления ростом с ИИ. 14 дней бесплатно, скидка 15% при оплате за год.</p>
+      </div>
+      <div class="plans" data-plans="short"></div>
+      <div style="margin-top:20px"><a class="btn btn-white" href="#pricing" data-go="pricing">Сравнить все возможности <svg class="i arr"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </div>
+
+  <div class="sec" style="padding-top:0"><div class="wrap"><div class="cta-band io" data-cta></div></div></div>
+</section>
+
+<!-- =================================== FEATURES =================================== -->
+<section class="page" data-page="features" aria-label="Возможности">
+  <div class="ph"><div class="wrap">
+    <div class="crumb"><a href="#home" data-go="home">Главная</a><span>/</span><span>Возможности</span></div>
+    <div class="ph-grid">
+      <h1 class="h-page rv">От данных к управленческим решениям</h1>
+      <p class="lead rv" style="animation-delay:.08s">SEO Core не просто показывает показатели. Платформа помогает понять, что происходит с маркетингом, где бизнес теряет заявки и какие действия нужны для роста.</p>
+    </div>
+    <div class="feat-nav rv" style="margin-top:32px;animation-delay:.16s">
+      <a href="#f-dash" data-scroll>Дашборд руководителя</a><a href="#f-anom" data-scroll>Аномалии и риски</a><a href="#f-seo" data-scroll>SEO и конкуренты</a><a href="#f-direct" data-scroll>Директ</a><a href="#f-ai" data-scroll>ИИ-рекомендации</a><a href="#f-plan" data-scroll>План и прогноз</a>
+    </div>
+  </div></div>
+
+  <div class="wrap">
+    <div class="feat" id="f-dash">
+      <div class="copy-col io">
+        <h2>Дашборд руководителя</h2>
+        <p class="lead">Главный экран отвечает на вопрос «как дела» одной фразой: закроется ли месяц по плану заявок и что повлияло сильнее всего.</p>
+        <ul class="ticks">
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Визиты, обращения и конверсия с динамикой по дням</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Прогноз на конец месяца и процент выполнения плана</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Периоды: месяц, квартал, неделя или свои даты</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Автоматические отчёты для собственника и команды</li>
+        </ul>
+      </div>
+      <div class="stage io" data-ui>
+        <div class="ui-grid">
+          <div class="ui-hero" style="grid-template-columns:minmax(0,1fr)"><div><span class="tag">В ПЛАНЕ</span><h4>Месяц закроется на 138% плана по заявкам</h4></div></div>
+          <div class="kpi-row" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+            <div class="ui-card kpi"><div class="hd">Визиты</div><div class="v num">25 189</div><div class="f">Прогноз <b>31 477</b></div></div>
+            <div class="ui-card kpi"><div class="hd">Заявки</div><div class="v num">856</div><div class="f"><b style="color:var(--green)">138,4%</b> плана из 726</div></div>
+            <div class="ui-card kpi"><div class="hd">Конверсия</div><div class="v num">3,40%</div><div class="f">до цели <b style="color:var(--green)">+1,09 п.п.</b></div></div>
+          </div>
+          <div class="ui-card chart-card"><div class="hd"><h5>Динамика и прогноз</h5></div><div class="chart" data-chart="hero"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat rev" id="f-anom">
+      <div class="copy-col io">
+        <h2>Аномалии с вероятной причиной</h2>
+        <p class="lead">Система сравнивает факт с ожидаемыми значениями с учётом сезонности и дней недели. Если что-то пошло не так, вы узнаете об этом сразу и увидите проблемный канал или страницу.</p>
+        <ul class="ticks">
+          <li><span class="ico c-red"><svg class="i"><use href="#i-alert"/></svg></span>Просадки страниц с потерянными визитами и заявками</li>
+          <li><span class="ico c-orange"><svg class="i"><use href="#i-alert"/></svg></span>Запросы, ушедшие из топ-10</li>
+          <li><span class="ico c-green"><svg class="i"><use href="#i-trend"/></svg></span>Тренды и инсайты: что дало рост</li>
+        </ul>
+      </div>
+      <div class="stage io" data-ui>
+        <div class="ui-card" style="display:grid;gap:8px">
+          <b style="font-size:14px">Проблемы и риски</b>
+          <div class="risk"><span class="bang">!</span><div class="m"><b>Просадка: /catalog/delivery/</b><small>Потеряно 26 визитов и 5 заявок. Проверьте страницу и её позиции</small></div><span class="chip c-red">ВЫСОКИЙ</span></div>
+          <div class="risk"><span class="bang">!</span><div class="m"><b>Запросы ушли из топ-10</b><small>Проверьте страницы частотных запросов</small></div><span class="chip c-red">ВЫСОКИЙ</span></div>
+          <div class="risk"><span class="bang o">!</span><div class="m"><b>Просадка: /blog/kak-vybrat/</b><small>Потеряна 51 сессия и 4 заявки</small></div><span class="chip c-orange">СРЕДНИЙ</span></div>
+        </div>
+        <div class="ui-card" style="display:grid;gap:8px;margin-top:10px">
+          <b style="font-size:14px">Тренды и инсайты</b>
+          <div class="risk" style="justify-content:space-between"><span class="ico c-blue" style="width:28px;height:28px"><svg class="i" style="width:15px"><use href="#i-calendar"/></svg></span><div class="m"><b>Сезонный рост</b></div><span class="chip c-green">+35,7%</span></div>
+          <div class="risk"><span class="ico c-green" style="width:28px;height:28px"><svg class="i" style="width:15px"><use href="#i-trend"/></svg></span><div class="m"><b>Рост заявок дал источник «Прямые заходы»</b></div><span class="chip c-green">+103,3%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat" id="f-seo">
+      <div class="copy-col io">
+        <h2>SEO, конкуренты и структура сайта</h2>
+        <p class="lead">Позиции в Яндексе и Google по регионам, автоподбор конкурентов по похожести семантики и контроль изменений страниц. Видно, где сайт теряет коммерческий и небрендовый спрос.</p>
+        <ul class="ticks">
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Мониторинг позиций, топ-3 и топ-10</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Базовый и расширенный SEO-аудит</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Конкуренты: доля похожести и их страницы в выдаче</li>
+          <li><span class="ico c-accent"><svg class="i"><use href="#i-check"/></svg></span>Чистка запросов: бренды конкурентов и стоп-слова</li>
+        </ul>
+      </div>
+      <div class="stage io" data-ui>
+        <div class="kpi-row" style="margin-bottom:10px">
+          <div class="ui-card kpi"><div class="small">В топ-3</div><div class="v num">363</div><span class="up">+96</span></div>
+          <div class="ui-card kpi"><div class="small">В топ-10</div><div class="v num">1 262</div><span class="up">+287</span></div>
+          <div class="ui-card kpi"><div class="small">Ср. позиция</div><div class="v num">19,6</div></div>
+          <div class="ui-card kpi"><div class="small">Пришли в топ-10</div><div class="v num">325</div></div>
+        </div>
+        <div class="mini-list">
+          <div class="pos-row"><span><b>Конкуренты</b></span><span class="small">похожесть</span><span class="small hide-sm">страниц</span><span class="small">в топ-10</span></div>
+          <div class="pos-row num"><span style="display:flex;gap:8px;align-items:center"><span class="ui-av">H</span><b>competitor-one.ru</b></span><span class="chip c-accent">14%</span><span class="hide-sm">2 140</span><span>860</span></div>
+          <div class="pos-row num"><span style="display:flex;gap:8px;align-items:center"><span class="ui-av" style="background:var(--pink-soft);color:var(--pink)">F</span><b>competitor-two.com</b></span><span class="chip c-accent">12%</span><span class="hide-sm">1 480</span><span>702</span></div>
+          <div class="pos-row num"><span style="display:flex;gap:8px;align-items:center"><span class="ui-av" style="background:var(--blue-soft);color:var(--blue)">C</span><b>competitor-three.ru</b></span><span class="chip c-accent">9%</span><span class="hide-sm">960</span><span>415</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat rev" id="f-direct">
+      <div class="copy-col io">
+        <h2>Яндекс Директ рядом с SEO</h2>
+        <p class="lead">Расходы на рекламу, активные кампании и стоимость обращения в одном окне с органикой. Понятно, где платная реклама окупается, а где забирает заявки, которые пришли бы и так.</p>
+        <ul class="ticks">
+          <li><span class="ico c-pink"><svg class="i"><use href="#i-check"/></svg></span>Расход, клики, визиты и заявки по кампаниям</li>
+          <li><span class="ico c-pink"><svg class="i"><use href="#i-check"/></svg></span>Стоимость обращения и её динамика</li>
+          <li><span class="ico c-pink"><svg class="i"><use href="#i-check"/></svg></span>Самые результативные кампании</li>
+        </ul>
+      </div>
+      <div class="stage io" data-ui>
+        <div class="ui-card">
+          <b style="display:block;margin-bottom:10px">Директ</b>
+          <div class="kpi-row" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+            <div class="tile" style="padding:12px"><div class="small">Расход</div><b class="num" style="font-size:20px">390 100 ₽</b></div>
+            <div class="tile" style="padding:12px"><div class="small">Клики</div><b class="num" style="font-size:20px">14 820</b></div>
+            <div class="tile" style="padding:12px"><div class="small">Визиты <span class="up">+24,1%</span></div><b class="num" style="font-size:20px">10 370</b></div>
+            <div class="tile" style="padding:12px"><div class="small">Заявки <span class="dn">−5,2%</span></div><b class="num" style="font-size:20px">199</b></div>
+          </div>
+          <div class="bars" style="margin-top:14px" data-bars></div>
+          <div class="small" style="margin-top:8px">Стоимость обращения по неделям · демо-данные</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat" id="f-ai">
+      <div class="copy-col io">
+        <h2>ИИ-рекомендации с приоритетом</h2>
+        <p class="lead">ИИ знает описание вашего бизнеса и отсекает темы, которые не приведут клиентов. Остаются задачи по SEO, рекламе и конверсии с оценкой потенциального эффекта.</p>
+        <ul class="ticks">
+          <li><span class="ico c-green"><svg class="i"><use href="#i-check"/></svg></span>Рекомендации по SEO, рекламе и конверсии</li>
+          <li><span class="ico c-green"><svg class="i"><use href="#i-check"/></svg></span>Приоритизация и оценка эффекта</li>
+          <li><span class="ico c-green"><svg class="i"><use href="#i-check"/></svg></span>Режим ИИ на выбор: ключи сервиса, ваши ключи OpenAI и Anthropic или свой агент</li>
+        </ul>
+      </div>
+      <div class="stage io" data-ui>
+        <div class="ui-card" style="margin-bottom:10px">
+          <b style="display:block;margin-bottom:10px">Сводка прогона</b>
+          <div class="kpi-row">
+            <div class="tile" style="padding:10px"><div class="small">Запросы</div><b class="num" style="font-size:18px">2 308</b></div>
+            <div class="tile" style="padding:10px"><div class="small">Отсеяно</div><b class="num" style="font-size:18px">171</b></div>
+            <div class="tile" style="padding:10px"><div class="small">Темы</div><b class="num" style="font-size:18px">144</b></div>
+            <div class="tile" style="padding:10px"><div class="small">Карточки</div><b class="num" style="font-size:18px">44</b></div>
+          </div>
+        </div>
+        <div class="ai-mode">
+          <div class="on"><b>Наши ключи</b>Агент сервиса, расход по тарифу</div>
+          <div><b>Свои ключи</b>OpenAI и Anthropic, хранятся зашифрованными</div>
+          <div><b>Свой агент</b>Задачи уходят агенту на вашем компьютере</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat rev" id="f-plan">
+      <div class="copy-col io">
+        <h2>План, бюджет и прогноз</h2>
+        <p class="lead">Задайте план по визитам и заявкам и бюджеты по статьям: SEO, ссылки, Директ, сервисы. SEO Core разложит их по дням и покажет, успевает ли месяц.</p>
+        <ul class="ticks">
+          <li><span class="ico c-blue"><svg class="i"><use href="#i-check"/></svg></span>План и факт расходов по статьям</li>
+          <li><span class="ico c-blue"><svg class="i"><use href="#i-check"/></svg></span>Цель конверсии считается из плана</li>
+          <li><span class="ico c-blue"><svg class="i"><use href="#i-check"/></svg></span>Факт по визитам и заявкам из Метрики</li>
+        </ul>
+      </div>
+      <div class="stage io" data-ui>
+        <div class="ui-card" style="overflow-x:auto">
+          <b style="display:block;margin-bottom:8px">План и расходы · Октябрь</b>
+          <table class="tbl num"><thead><tr><th>СТАТЬЯ</th><th>ПЛАН, ₽</th><th>ФАКТ, ₽</th><th>%</th></tr></thead><tbody>
+            <tr><td>SEO</td><td>120 000</td><td>92 900</td><td><span class="chip c-green">77%</span></td></tr>
+            <tr><td>Ссылки</td><td>40 000</td><td>31 000</td><td><span class="chip c-green">78%</span></td></tr>
+            <tr><td>Директ</td><td>450 000</td><td>390 100</td><td><span class="chip c-orange">87%</span></td></tr>
+            <tr><td>Сервисы</td><td>25 000</td><td>19 400</td><td><span class="chip c-green">78%</span></td></tr>
+            <tr class="tot"><td>Заявки, шт.</td><td>726</td><td>856</td><td><span class="chip c-green">118%</span></td></tr>
+          </tbody></table>
+          <div class="small" style="margin-top:8px">На 24-й день месяца ожидаемый расход около 77% бюджета</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-tight"><div class="wrap"><div class="cta-band io" data-cta></div></div></div>
+</section>
+
+<!-- =================================== CMO =================================== -->
+<section class="page" data-page="cmo" aria-label="Для директора по маркетингу">
+  <div class="ph"><div class="wrap">
+    <div class="crumb"><a href="#home" data-go="home">Главная</a><span>/</span><span>Для CMO</span></div>
+    <div class="ph-grid">
+      <h1 class="h-page rv">Меньше часов на отчёты, больше решений</h1>
+      <p class="lead rv" style="animation-delay:.08s">Для директора по маркетингу компании, которая уже вкладывает в интернет-маркетинг и работает с несколькими каналами, но не имеет единой системы оценки их эффективности.</p>
+    </div>
+    <div class="hero-actions rv" style="margin-top:28px;animation-delay:.16s"><a class="btn btn-primary" href="#demo" data-go="demo">Получить демо на своих данных <svg class="i arr"><use href="#i-arrow"/></svg></a></div>
+  </div></div>
+
+  <div class="wrap">
+    <div class="persona">
+      <div class="panel io">
+        <h3>Знакомая ситуация</h3>
+        <dl>
+          <div><dt>Каналы</dt><dd>SEO, публикации на РБК, VC.ru, отраслевых порталах и агрегаторах, контекстная реклама.</dd></div>
+          <div><dt>Трафик</dt><dd>Около 30% приходится на брендовый поиск и прямые визиты. Вклад остальных каналов размыт.</dd></div>
+          <div><dt>Аналитика</dt><dd>Данные в разных системах, вклад каждого канала в заявки оценить сложно.</dd></div>
+          <div><dt>Управление</dt><dd>Эффективность оценивается по отчётам специалистов и подрядчиков, причины изменений руководитель ищет сам.</dd></div>
+        </dl>
+      </div>
+      <div class="panel io" style="background:var(--accent);color:var(--on-accent)">
+        <h3>Чего вы хотите от маркетинга</h3>
+        <ul class="ticks" style="color:var(--on-accent)">
+          <li><span class="ico" style="background:var(--accent-tile)"><svg class="i"><use href="#i-check"/></svg></span>Управлять на основе цифр и рекомендаций</li>
+          <li><span class="ico" style="background:var(--accent-tile)"><svg class="i"><use href="#i-check"/></svg></span>Видеть все каналы в одном интерфейсе</li>
+          <li><span class="ico" style="background:var(--accent-tile)"><svg class="i"><use href="#i-check"/></svg></span>Автоматически находить аномалии трафика, заявок и конверсии</li>
+          <li><span class="ico" style="background:var(--accent-tile)"><svg class="i"><use href="#i-check"/></svg></span>Растить небрендовую видимость и заявки без пропорционального роста затрат</li>
+          <li><span class="ico" style="background:var(--accent-tile)"><svg class="i"><use href="#i-check"/></svg></span>Объективно оценивать команду и подрядчиков</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head io"><h2 class="h-sec">Дашборд отвечает на четыре вопроса</h2><p class="lead">То, ради чего обычно собирают совещание, видно в первые 30 секунд после входа.</p></div>
+      <div style="overflow-x:auto"><table class="qtable">
+        <tr class="io"><td>Что происходит?</td><td>Трафик, заявки, конверсия, SEO-показатели и их динамика</td></tr>
+        <tr class="io"><td>Это нормально?</td><td>Сравнение с ожидаемыми значениями с учётом сезонности и дней недели</td></tr>
+        <tr class="io"><td>Почему это произошло?</td><td>Вероятные причины отклонений, проблемные каналы и страницы</td></tr>
+        <tr class="io"><td>Что делать?</td><td>Конкретные рекомендации с приоритетами и ожидаемым эффектом</td></tr>
+      </table></div>
+    </div>
+
+    <div class="need io">
+      <p class="q">«Не тратить часы на анализ отчётов, а сразу понимать, насколько эффективно работает маркетинг, почему меняются показатели и что сделать для роста заявок».</p>
+      <p class="small">Задача, ради которой создан SEO Core</p>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head io"><h2 class="h-sec">Что получает руководитель</h2><p class="lead">Меньше времени на анализ, больше контроля и решений, основанных на данных.</p></div>
+      <div class="value3">
+        <div class="v v1 io"><h3>Контроль</h3><p>Единая картина эффективности маркетинга, SEO и привлечения клиентов. Работа подрядчиков видна в цифрах, а не в их отчётах.</p></div>
+        <div class="v v2 io"><h3>Диагностика</h3><p>Автоматическое выявление отклонений и анализ вероятных причин. Поиск проблемы занимает минуты вместо дней.</p></div>
+        <div class="v v3 io"><h3>Рост</h3><p>Рекомендации по SEO, видимости сайта, конверсии и количеству заявок с понятным приоритетом.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec-tight" style="padding-top:0"><div class="wrap"><div class="cta-band io" data-cta></div></div></div>
+</section>
+
+<!-- =================================== PRICING =================================== -->
+<section class="page" data-page="pricing" aria-label="Тарифы">
+  <div class="ph"><div class="wrap">
+    <div class="crumb"><a href="#home" data-go="home">Главная</a><span>/</span><span>Тарифы</span></div>
+    <div class="ph-grid">
+      <h1 class="h-page rv">Тарифы SEO Core</h1>
+      <div class="rv" style="display:grid;gap:18px;animation-delay:.08s">
+        <p class="lead">Базовый контроль, полноценная аналитика или управление ростом с ИИ. Начните с 14 бесплатных дней.</p>
+        <div class="bill" role="group" aria-label="Период оплаты"><button type="button" aria-pressed="true" data-bill="m">Помесячно</button><button type="button" aria-pressed="false" data-bill="y">За год <span class="chip c-green">−15%</span></button></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="wrap">
+    <div class="plans" data-plans="full"></div>
+
+    <div class="sec">
+      <div class="sec-head io"><h2 class="h-sec">Подробное сравнение</h2><p class="lead">Лимиты и возможности каждого тарифа.</p></div>
+      <div class="cmp-wrap io"><table class="cmp" id="cmp"></table></div>
+    </div>
+
+    <div class="terms">
+      <div class="term io"><b>14 дней</b><span>бесплатный период с ограниченными лимитами</span></div>
+      <div class="term io"><b>−15%</b><span>при оплате сразу за 12 месяцев</span></div>
+      <div class="term io"><b class="num">50 898 ₽</b><span>год на тарифе Старт вместо 59 880 ₽</span></div>
+      <div class="term io"><b>−20%</b><span>на первый месяц по приглашению клиента</span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head io"><h2 class="h-sec">Вопросы об оплате</h2></div>
+      <div class="faq">
+        <details class="io"><summary>Что входит в бесплатный период?<span class="pl"><svg class="i"><use href="#i-plus"/></svg></span></summary><p>14 дней доступа к сервису с ограниченными лимитами. Этого достаточно, чтобы подключить Метрику, увидеть дашборд на своих данных и первые рекомендации.</p></details>
+        <details class="io"><summary>Какие системы можно подключить?<span class="pl"><svg class="i"><use href="#i-plus"/></svg></span></summary><p>Яндекс Метрику и Вебмастер на всех тарифах, Яндекс Директ на тарифах Профи и Бизнес. Позиции снимаются в Яндексе и Google по выбранному региону.</p></details>
+        <details class="io"><summary>Что такое проект и пользователь?<span class="pl"><svg class="i"><use href="#i-plus"/></svg></span></summary><p>Проект — один сайт со своими настройками и результатами анализа. Пользователи — сотрудники и подрядчики, которым вы открываете доступ к проектам.</p></details>
+        <details class="io"><summary>Можно ли сменить тариф?<span class="pl"><svg class="i"><use href="#i-plus"/></svg></span></summary><p>Да, перейти на другой тариф можно в любой момент. Напишите нам, и мы поможем выбрать подходящие лимиты.</p></details>
+        <details class="io"><summary>ИИ гарантирует рост заявок?<span class="pl"><svg class="i"><use href="#i-plus"/></svg></span></summary><p>Нет. Оценка эффекта рекомендаций прогнозная: она показывает потенциал задачи, чтобы вы могли расставить приоритеты, но не является гарантией результата.</p></details>
+        <details class="io"><summary>Работаете с юрлицами?<span class="pl"><svg class="i"><use href="#i-plus"/></svg></span></summary><p>Да. Оставьте заявку, и мы выставим счёт на компанию для помесячной или годовой оплаты.</p></details>
+      </div>
+    </div>
+  </div>
+  <div class="sec-tight" style="padding-top:0"><div class="wrap"><div class="cta-band io" data-cta></div></div></div>
+</section>
+
+<!-- =================================== PARTNERS =================================== -->
+<section class="page" data-page="partners" aria-label="Партнёрам">
+  <div class="ph"><div class="wrap">
+    <div class="crumb"><a href="#home" data-go="home">Главная</a><span>/</span><span>Партнёрам</span></div>
+    <div class="ph-grid">
+      <h1 class="h-page rv">Рекомендуйте SEO Core и&nbsp;зарабатывайте</h1>
+      <p class="lead rv" style="animation-delay:.08s">Две программы: реферальная для наших клиентов и партнёрская SEO Core Partner для агентств, маркетологов и консультантов.</p>
+    </div>
+  </div></div>
+  <div class="wrap">
+    <div class="prog">
+      <div class="panel io">
+        <h2 class="h-card">Реферальная программа для клиентов</h2>
+        <div><div class="big num">30 дней</div><p class="muted" style="margin-top:8px">текущего тарифа в подарок за каждого приглашённого клиента</p></div>
+        <div class="kv">
+          <div><span>Кому доступна</span><span>Действующим клиентам SEO Core</span></div>
+          <div><span>Бонус приглашённому</span><span>Скидка 20% на первый месяц</span></div>
+          <div><span>Ограничение бонуса</span><span>До 9 990 ₽ за одного клиента</span></div>
+          <div><span>Когда начисляется</span><span>После первого платежа и 14 дней без возврата</span></div>
+          <div><span>Приглашений</span><span>Без ограничений</span></div>
+          <div><span>Форма бонуса</span><span>Зачёт в оплату подписки, без вывода денег</span></div>
+        </div>
+      </div>
+      <div class="panel ac io">
+        <h2 class="h-card">SEO Core Partner</h2>
+        <div><div class="big num">20%</div><p class="muted" style="margin-top:8px">от оплаченной подписки клиента в течение первых 12 оплаченных месяцев</p></div>
+        <div class="kv">
+          <div><span>Для кого</span><span>Агентства, маркетологи, консультанты</span></div>
+          <div><span>Начало начисления</span><span>С первого платежа клиента</span></div>
+          <div><span>Порог выплаты</span><span>От 3 одновременно активных платящих клиентов</span></div>
+          <div><span>Выплаты</span><span>Ежемесячно при выполнении порога</span></div>
+          <div><span>Атрибуция</span><span>90 дней с первого перехода по ссылке</span></div>
+          <div><span>Основание</span><span>Партнёрский договор</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head io"><h2 class="h-sec">Посчитайте свой доход</h2><p class="lead">Укажите, сколько клиентов и на каких тарифах вы приведёте. Расчёт по полной цене при непрерывной оплате.</p></div>
+      <div class="calc io">
+        <div class="panel" style="display:grid;gap:10px">
+          <div class="stepper"><div><b>Старт · 4 990 ₽</b><small>комиссия 998 ₽ в месяц</small></div><div class="ctl"><button type="button" data-st="0" data-d="-1" aria-label="Меньше клиентов на Старте">−</button><output id="n0">0</output><button type="button" data-st="0" data-d="1" aria-label="Больше клиентов на Старте">+</button></div></div>
+          <div class="stepper"><div><b>Профи · 9 990 ₽</b><small>комиссия 1 998 ₽ в месяц</small></div><div class="ctl"><button type="button" data-st="1" data-d="-1" aria-label="Меньше клиентов на Профи">−</button><output id="n1">3</output><button type="button" data-st="1" data-d="1" aria-label="Больше клиентов на Профи">+</button></div></div>
+          <div class="stepper"><div><b>Бизнес · 19 990 ₽</b><small>комиссия 3 998 ₽ в месяц</small></div><div class="ctl"><button type="button" data-st="2" data-d="-1" aria-label="Меньше клиентов на Бизнесе">−</button><output id="n2">0</output><button type="button" data-st="2" data-d="1" aria-label="Больше клиентов на Бизнесе">+</button></div></div>
+        </div>
+        <div class="panel calc-res" aria-live="polite">
+          <p class="muted">Комиссия в месяц</p>
+          <div class="big num" id="cm">5 994 ₽</div>
+          <div class="row">
+            <div><b class="num" id="cy">71 928 ₽</b><span>за 12 месяцев</span></div>
+            <div><b class="num" id="cc">3</b><span>активных клиента</span></div>
+          </div>
+          <div class="status ok" id="cs"><svg class="i"><use href="#i-check"/></svg><span>Порог выполнен: выплаты ежемесячно</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec" style="padding-top:0">
+      <div class="sec-head io"><h2 class="h-sec">Общие правила</h2></div>
+      <ul class="rules">
+        <li class="io"><svg class="i"><use href="#i-check"/></svg>Активный клиент — компания с действующей оплаченной подпиской, без тестового периода.</li>
+        <li class="io"><svg class="i"><use href="#i-check"/></svg>Если активных клиентов меньше трёх, комиссия копится, а выплата приостанавливается до восстановления порога.</li>
+        <li class="io"><svg class="i"><use href="#i-check"/></svg>Самоприглашения, дублирующие аккаунты и повторные регистрации одной компании не учитываются.</li>
+        <li class="io"><svg class="i"><use href="#i-check"/></svg>За одну продажу реферальный бонус и партнёрская комиссия не суммируются.</li>
+        <li class="io"><svg class="i"><use href="#i-check"/></svg>Комиссия считается по фактическим платежам с учётом скидок и возвратов.</li>
+        <li class="io"><svg class="i"><use href="#i-check"/></svg>Комиссия по возвращённому платежу аннулируется.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sec-tight" style="padding-top:0"><div class="wrap">
+    <div class="cta-band io">
+      <div style="display:grid;gap:14px"><h2 class="h-sec">Станьте партнёром SEO Core</h2><p>Оставьте заявку, и мы пришлём договор и вашу партнёрскую ссылку.</p></div>
+      <div class="acts"><a class="btn btn-white" href="#demo" data-go="demo" data-role="partner">Стать партнёром <svg class="i arr"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =================================== DEMO =================================== -->
+<section class="page" data-page="demo" aria-label="Заявка">
+  <div class="ph"><div class="wrap">
+    <div class="crumb"><a href="#home" data-go="home">Главная</a><span>/</span><span>Заявка</span></div>
+    <div class="ph-grid">
+      <h1 class="h-page rv">Начните с 14 бесплатных дней</h1>
+      <p class="lead rv" style="animation-delay:.08s">Оставьте контакты, и мы откроем доступ, поможем подключить Метрику и покажем дашборд на данных вашего сайта.</p>
+    </div>
+  </div></div>
+  <div class="wrap">
+    <div class="split" style="align-items:start;padding-bottom:clamp(64px,8vw,120px)">
+      <div class="form-card io">
+        <form id="lead" novalidate>
+          <div class="form-grid">
+            <div class="fld"><label for="f-name">Имя</label><input id="f-name" name="name" autocomplete="name" placeholder="Анна" required><span class="err"></span></div>
+            <div class="fld"><label for="f-mail">Рабочий email</label><input id="f-mail" name="email" type="email" autocomplete="email" placeholder="name@company.ru" required><span class="err"></span></div>
+            <div class="fld"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 900 000-00-00"><span class="err"></span></div>
+            <div class="fld"><label for="f-site">Сайт</label><input id="f-site" name="site" placeholder="company.ru" required><span class="err"></span></div>
+            <div class="fld"><label for="f-role">Ваша роль</label><select id="f-role" name="role"><option>Директор по маркетингу</option><option>Собственник бизнеса</option><option>Маркетолог или SEO-специалист</option><option>Агентство или партнёр</option></select><span class="err"></span></div>
+            <div class="fld"><label for="f-plan">Интересует тариф</label><select id="f-plan" name="plan"><option>Пока не знаю</option><option>Старт</option><option selected>Профи</option><option>Бизнес</option><option>Партнёрская программа</option></select><span class="err"></span></div>
+            <div class="fld full"><label for="f-msg">Комментарий</label><textarea id="f-msg" name="msg" placeholder="Какие каналы используете и что хотите видеть на дашборде"></textarea></div>
+            <div class="full" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Отправить заявку <svg class="i arr"><use href="#i-arrow"/></svg></button><span class="small">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</span></div>
+          </div>
+        </form>
+        <div class="done" id="done" hidden>
+          <span class="ico c-green"><svg class="i" style="width:26px;height:26px"><use href="#i-check"/></svg></span>
+          <h2 class="h-card">Заявка принята</h2>
+          <p class="muted">Мы свяжемся с вами в течение рабочего дня и откроем доступ к SEO Core.</p>
+          <button class="btn btn-soft btn-sm" type="button" id="again">Отправить ещё одну</button>
+        </div>
+      </div>
+      <div class="copy-col io">
+        <h2 class="h-card" style="font-size:clamp(24px,2.4vw,32px)">Что будет дальше</h2>
+        <ol class="steps-list">
+          <li><div><b>Открываем доступ</b><span>Создаём организацию и первый проект для вашего сайта.</span></div></li>
+          <li><div><b>Подключаем данные</b><span>Метрика и Вебмастер, при необходимости Директ. Выбираем регион для позиций.</span></div></li>
+          <li><div><b>Показываем дашборд</b><span>Разбираем ваши каналы, отклонения и первые рекомендации вместе с вами.</span></div></li>
+          <li><div><b>Выбираете тариф</b><span>После 14 дней решаете, какой уровень нужен вашей команде.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-word" aria-hidden="true">SEO Core</div>
+    <div class="foot-grid">
+      <div style="display:grid;gap:14px;align-content:start"><p class="muted" style="max-width:36ch">Платформа маркетинговой аналитики: от данных к управленческим решениям.</p><button class="theme-t" type="button" id="theme"><svg class="i" style="width:16px;height:16px"><use href="#i-moon"/></svg><span>Сменить тему</span></button></div>
+      <div><h4>Продукт</h4><ul><li><a href="#features" data-go="features">Возможности</a></li><li><a href="#pricing" data-go="pricing">Тарифы</a></li><li><a href="https://konseo.space/login" target="_blank" rel="noopener">Вход в кабинет</a></li></ul></div>
+      <div><h4>Кому</h4><ul><li><a href="#cmo" data-go="cmo">Директору по маркетингу</a></li><li><a href="#partners" data-go="partners">Агентствам и партнёрам</a></li><li><a href="#demo" data-go="demo">Заявка на доступ</a></li></ul></div>
+      <div><h4>Источники</h4><ul><li>Яндекс Метрика</li><li>Яндекс Вебмастер</li><li>Яндекс Директ</li><li>Keys.so</li></ul></div>
+    </div>
+    <div class="foot-bot"><span>© 2026 SEO Core · konseo.space</span><span>Цифры на макетах интерфейса — демо-данные</span></div>
+  </div>
+</footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3c.5 4.5 2.5 6.5 7 7-4.5.5-6.5 2.5-7 7-.5-4.5-2.5-6.5-7-7 4.5-.5 6.5-2.5 7-7z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 22V4a1 1 0 0 1 1-1h9l1 2h5v10h-7l-1-2H5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z"/><path d="m2 16 3-8 3 8c-.9.7-1.9 1-3 1s-2.1-.3-3-1z"/><path d="M7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+</svg>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  // icons: make every <svg class="i"> stroke-styled (already via CSS)
+
+  /* ---------- router ---------- */
+  var pages=[].slice.call(document.querySelectorAll('.page'));
+  var ids=pages.map(function(p){return p.dataset.page});
+  var mnav=document.getElementById('mnav'), burger=document.getElementById('burger');
+  function closeMenu(){mnav.classList.remove('open');burger.setAttribute('aria-expanded','false');burger.innerHTML='<svg class="i"><use href="#i-menu"/></svg>';document.body.style.overflow=''}
+  function show(id,keepScroll){
+    if(ids.indexOf(id)<0) id='home';
+    pages.forEach(function(p){p.classList.toggle('on',p.dataset.page===id)});
+    document.querySelectorAll('[data-go]').forEach(function(a){
+      if(a.closest('.nav')||a.closest('.mnav')){ if(a.dataset.go===id) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }
+    });
+    var t={home:'SEO Core',features:'Возможности · SEO Core',cmo:'Для CMO · SEO Core',pricing:'Тарифы · SEO Core',partners:'Партнёрам · SEO Core',demo:'Заявка · SEO Core'};
+    document.title=t[id];
+    closeMenu();
+    if(!keepScroll) window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+    observe();
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('[data-go]');
+    if(a){e.preventDefault();var id=a.dataset.go;
+      if(a.dataset.role==='partner'){var s=document.getElementById('f-plan');if(s)s.value='Партнёрская программа';var r=document.getElementById('f-role');if(r)r.value='Агентство или партнёр'}
+      try{history.replaceState(null,'','#'+id)}catch(_){}
+      show(id);return}
+    var s=e.target.closest('[data-scroll]');
+    if(s){e.preventDefault();var el=document.querySelector(s.getAttribute('href'));if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+  });
+  burger.addEventListener('click',function(){
+    var open=!mnav.classList.contains('open');
+    if(!open){closeMenu();return}
+    mnav.classList.add('open');burger.setAttribute('aria-expanded','true');burger.innerHTML='<svg class="i"><use href="#i-x"/></svg>';document.body.style.overflow='hidden';
+  });
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1))});
+
+  /* ---------- reveal on scroll ---------- */
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){
+    es.forEach(function(en){if(en.isIntersecting){en.target.classList.remove('pre');io.unobserve(en.target)}})
+  },{rootMargin:'0px 0px -8% 0px'}):null;
+  function observe(){
+    if(!io) return;
+    var on=document.querySelector('.page.on');
+    var list=[].slice.call((on?on:document).querySelectorAll('.io'));
+    var vh=window.innerHeight;
+    list.forEach(function(el,i){
+      var r=el.getBoundingClientRect();
+      if(r.top<vh*0.92) return; // already visible: keep at rest
+      el.classList.add('pre');
+      var sib=el.parentElement?[].indexOf.call(el.parentElement.children,el):0;
+      el.style.transitionDelay=Math.min(sib,5)*70+'ms';
+      io.observe(el);
+    });
+  }
+
+  /* ---------- charts ---------- */
+  var NS='http://www.w3.org/2000/svg';
+  function svg(w,h){var s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 '+w+' '+h);s.setAttribute('role','img');return s}
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var visits=[1080,1060,330,280,1050,1130,1140,980,960,320,620,1230,1560,1720,1830,1490,560,470,1380,1720,1300,1180,1120,360];
+  var fc=[350,1090,1110,1160,1130,1120,380];
+  function heroChart(box){
+    var W=560,H=170,pl=44,pr=8,pt=10,pb=24, max=2000, n=visits.length+fc.length;
+    var s=svg(W,H); s.setAttribute('aria-label','Визиты по дням за октябрь: факт и прогноз до 31 октября');
+    var x=function(i){return pl+(W-pl-pr)*i/(n-1)}, y=function(v){return pt+(H-pt-pb)*(1-v/max)};
+    // weekends bands
+    for(var d=0;d<n;d++){var dow=(d+3)%7; if(dow===5){s.appendChild(el('rect',{x:x(d)-4,y:pt,width:Math.min(x(d+2)-x(d)+8,W-pr-x(d)+4),height:H-pt-pb,fill:'var(--surface-2)',rx:4}))}}
+    [0,1000,2000].forEach(function(v){var t=el('text',{x:pl-8,y:y(v)+4,'text-anchor':'end','font-size':10,fill:'var(--ink-3)','font-weight':700});t.textContent=v===0?'0':(v/1000)+' 000';s.appendChild(t)});
+    var p='',a='';
+    visits.forEach(function(v,i){p+=(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)});
+    a=p+'L'+x(visits.length-1)+' '+y(0)+'L'+x(0)+' '+y(0)+'Z';
+    s.appendChild(el('path',{d:a,fill:'var(--accent-soft)'}));
+    s.appendChild(el('path',{d:p,fill:'none',stroke:'var(--accent)','stroke-width':2.5,'stroke-linejoin':'round','stroke-linecap':'round',class:'ln'}));
+    var q='M'+x(visits.length-1)+' '+y(visits[visits.length-1]);
+    fc.forEach(function(v,i){q+='L'+x(visits.length+i).toFixed(1)+' '+y(v).toFixed(1)});
+    s.appendChild(el('path',{d:q,fill:'none',stroke:'var(--accent)','stroke-width':2.5,'stroke-dasharray':'5 5','stroke-linecap':'round'}));
+    var tx=x(visits.length-1);
+    s.appendChild(el('line',{x1:tx,x2:tx,y1:pt,y2:H-pb,stroke:'var(--orange)','stroke-width':1.5,'stroke-dasharray':'3 4'}));
+    s.appendChild(el('circle',{cx:tx,cy:y(visits[visits.length-1]),r:4.5,fill:'var(--surface)',stroke:'var(--accent)','stroke-width':2.5}));
+    [[4,'5 окт'],[11,'12 окт'],[18,'19 окт']].forEach(function(t){var e=el('text',{x:x(t[0]),y:H-6,'text-anchor':'middle','font-size':10,fill:'var(--ink-3)','font-weight':700});e.textContent=t[1];s.appendChild(e)});
+    var td=el('text',{x:tx,y:H-6,'text-anchor':'middle','font-size':10,fill:'var(--orange)','font-weight':800});td.textContent='сегодня';s.appendChild(td);
+    box.appendChild(s);
+  }
+  function bandChart(box){
+    var W=560,H=170,pl=30,pr=8,pt=10,pb=22,max=60;
+    var leads=[28,30,9,8,31,33,34,30,29,10,19,36,40,44,46,41,15,13,38,45,36,34,33,12];
+    var exp=leads.map(function(v,i){var dow=(i+3)%7;return (dow===5||dow===6)?11:30+i*0.35});
+    var n=leads.length,s=svg(W,H);s.setAttribute('aria-label','Заявки по дням и коридор ожидаемых значений');
+    var x=function(i){return pl+(W-pl-pr)*i/(n-1)},y=function(v){return pt+(H-pt-pb)*(1-v/max)};
+    var up='',lo='';
+    exp.forEach(function(v,i){up+=(i?'L':'M')+x(i)+' '+y(v*1.4)});
+    for(var i=n-1;i>=0;i--)lo+='L'+x(i)+' '+y(exp[i]*0.65);
+    s.appendChild(el('path',{d:up+lo+'Z',fill:'var(--green-soft)'}));
+    [0,30,60].forEach(function(v){var t=el('text',{x:pl-8,y:y(v)+4,'text-anchor':'end','font-size':10,fill:'var(--ink-3)','font-weight':700});t.textContent=v;s.appendChild(t)});
+    var p='';leads.forEach(function(v,i){p+=(i?'L':'M')+x(i)+' '+y(v)});
+    s.appendChild(el('path',{d:p,fill:'none',stroke:'var(--accent)','stroke-width':2.5,'stroke-linejoin':'round'}));
+    leads.forEach(function(v,i){if(i===n-1)s.appendChild(el('circle',{cx:x(i),cy:y(v),r:4.5,fill:'var(--surface)',stroke:'var(--accent)','stroke-width':2.5}))});
+    [[4,'5 окт'],[11,'12 окт'],[18,'19 окт']].forEach(function(t){var e=el('text',{x:x(t[0]),y:H-5,'text-anchor':'middle','font-size':10,fill:'var(--ink-3)','font-weight':700});e.textContent=t[1];s.appendChild(e)});
+    box.appendChild(s);
+  }
+  document.querySelectorAll('[data-chart]').forEach(function(b){b.dataset.chart==='band'?bandChart(b):heroChart(b)});
+
+  document.querySelectorAll('[data-donut]').forEach(function(s){
+    var parts=s.dataset.donut.split(',').map(Number),cols=['var(--accent)','var(--pink)','var(--blue)','var(--grey)'];
+    var r=48,c=2*Math.PI*r,off=0,gap=2;
+    s.appendChild(el('circle',{cx:60,cy:60,r:r,fill:'none',stroke:'var(--surface-3)','stroke-width':14}));
+    parts.forEach(function(p,i){var len=c*p/100;
+      s.appendChild(el('circle',{cx:60,cy:60,r:r,fill:'none',stroke:cols[i],'stroke-width':14,'stroke-dasharray':Math.max(len-gap,0.5)+' '+(c-Math.max(len-gap,0.5)),'stroke-dashoffset':-off,transform:'rotate(-90 60 60)','stroke-linecap':'butt'}));off+=len});
+    var t=el('text',{x:60,y:62,'text-anchor':'middle','font-size':17,'font-weight':800,fill:'var(--ink)'});t.textContent=s.dataset.total;s.appendChild(t);
+    var l=el('text',{x:60,y:78,'text-anchor':'middle','font-size':10,'font-weight':700,fill:'var(--ink-3)'});l.textContent=s.dataset.lbl;s.appendChild(l);
+    s.setAttribute('role','img');s.setAttribute('aria-label',s.dataset.total+' '+s.dataset.lbl+' по источникам');
+  });
+  document.querySelectorAll('[data-bars]').forEach(function(b){
+    [2410,2280,2150,2090,1980,1920,1840,1960].forEach(function(v,i,a){var d=document.createElement('div');d.style.height=(v/2500*100)+'%';if(i===a.length-1)d.className='f';d.title=v+' ₽';b.appendChild(d)});
+  });
+
+  /* ---------- four questions ---------- */
+  var QX=[
+    ['Что происходит?','Ключевые показатели месяца и их динамика к прошлому периоду, с прогнозом на конец месяца.',['Визиты, заявки и конверсия сайта','Прогноз и процент выполнения плана','SEO: топ-3, топ-10, средняя позиция']],
+    ['Это нормально?','Факт сравнивается с ожидаемым коридором с учётом сезонности и дня недели. Обычное колебание не поднимает тревогу.',['Коридор нормы для каждого показателя','Сезонность и дни недели','Отклонения подсвечиваются сразу']],
+    ['Почему это произошло?','Система показывает, какой канал и какая страница дали изменение, и предлагает вероятную причину.',['Вклад каждого канала в изменение','Проблемные страницы с потерями','Запросы, ушедшие из топ-10']],
+    ['Что делать?','Конкретные задачи с приоритетом и ожидаемым эффектом. Отклонённые темы не повторяются, задачи в работе не дублируются.',['Создать, написать или доработать страницу','Проверки целей и качества заявок','Выгрузка задач в Excel']]
+  ];
+  var tabs=[].slice.call(document.querySelectorAll('.q-tab')),qx=document.getElementById('qx');
+  function setQ(i,focus){
+    tabs.forEach(function(t,j){t.setAttribute('aria-selected',j===i?'true':'false');t.tabIndex=j===i?0:-1;document.getElementById('qp'+j).classList.toggle('on',j===i)});
+    if(focus)tabs[i].focus();
+    var d=QX[i];qx.innerHTML='<h3>'+d[0]+'</h3><p>'+d[1]+'</p><ul>'+d[2].map(function(s){return '<li><svg class="i"><use href="#i-check"/></svg>'+s+'</li>'}).join('')+'</ul>';
+    qx.style.animation='none';void qx.offsetWidth;qx.style.animation='rise .35s ease both';
+  }
+  tabs.forEach(function(t,i){t.addEventListener('click',function(){setQ(i)});
+    t.addEventListener('keydown',function(e){var k=e.key;if(k==='ArrowRight'||k==='ArrowLeft'){e.preventDefault();setQ((i+(k==='ArrowRight'?1:3))%4,true)}})});
+  setQ(0);
+
+  /* ---------- plans ---------- */
+  var PLANS=[
+    {id:'start',n:'СТАРТ',p:4990,y:50898,sub:'Базовые показатели сайта и SEO',lim:[['1','проект'],['1','пользователь'],['50','SEO-запросов'],['1 раз/нед.','проверка позиций']],f:['Яндекс Метрика: визиты, обращения, конверсия','Динамика по дням','Мониторинг позиций','Базовый SEO-аудит']},
+    {id:'pro',n:'ПРОФИ',p:9990,y:101898,hot:1,sub:'Полный дашборд, SEO, реклама, прогнозы и тренды',lim:[['3','проекта'],['5','пользователей'],['500','SEO-запросов'],['Ежедневно','проверка позиций']],f:['Всё из Старта','Полный дашборд руководителя','Структура трафика и прогноз на конец месяца','Яндекс Директ и стоимость обращения','Мониторинг конкурентов, расширенный аудит','Проблемы, риски и автоматические отчёты']},
+    {id:'biz',n:'БИЗНЕС',p:19990,y:203898,sub:'Все возможности Профи и ИИ-рекомендации',lim:[['10','проектов'],['15','пользователей'],['2 000','SEO-запросов'],['Ежедневно','проверка позиций']],f:['Всё из Профи','ИИ-рекомендации по SEO, рекламе и конверсии','Приоритизация задач','Оценка потенциального эффекта']}
+  ];
+  var fmt=function(v){return Math.round(v).toLocaleString('ru-RU').replace(/,/g,' ')};
+  var bill='m';
+  function renderPlans(){
+    document.querySelectorAll('[data-plans]').forEach(function(box){
+      var full=box.dataset.plans==='full';
+      box.innerHTML=PLANS.map(function(p){
+        var yearly=full&&bill==='y';
+        var price=yearly?fmt(p.y/12):fmt(p.p);
+        var yr=yearly?fmt(p.y)+' ₽ за 12 месяцев, вместо '+fmt(p.p*12)+' ₽':(full?'или '+fmt(p.y)+' ₽ за год со скидкой 15%':'');
+        var feats=full?p.f:p.f.slice(0,3);
+        return '<article class="plan io'+(p.hot?' hot':'')+'">'+
+          '<div class="nm"><span>'+p.n+'</span>'+(p.hot?'<span class="badge-pop">Выбирают чаще</span>':'')+'</div>'+
+          '<div><div class="pr num">'+price+' ₽<small> / мес</small></div>'+(yr?'<div class="yr" style="margin-top:8px">'+yr+'</div>':'')+'</div>'+
+          '<p class="sub">'+p.sub+'</p>'+
+          (full?'<div class="lim">'+p.lim.map(function(l){return '<div><b>'+l[0]+'</b>'+l[1]+'</div>'}).join('')+'</div>':'')+
+          '<ul>'+feats.map(function(f){return '<li><svg class="i"><use href="#i-check"/></svg>'+f+'</li>'}).join('')+'</ul>'+
+          '<a class="btn btn-primary" href="#demo" data-go="demo" data-plan="'+p.n+'">Попробовать 14 дней</a>'+
+        '</article>'}).join('');
+    });
+  }
+  renderPlans();
+  document.querySelectorAll('[data-bill]').forEach(function(b){b.addEventListener('click',function(){
+    bill=b.dataset.bill;document.querySelectorAll('[data-bill]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});renderPlans();
+  })});
+  document.addEventListener('click',function(e){var a=e.target.closest('[data-plan]');if(a){var s=document.getElementById('f-plan');var map={'СТАРТ':'Старт','ПРОФИ':'Профи','БИЗНЕС':'Бизнес'};if(s)s.value=map[a.dataset.plan]}},true);
+
+  /* ---------- comparison ---------- */
+  var Y='<span class="yes"><svg class="i"><use href="#i-check"/></svg></span>',N='<span class="no">—</span>';
+  var CMP=[
+    ['Лимиты',[['Проекты','1','3','10'],['Пользователи','1','5','15'],['SEO-запросы','50','500','2 000'],['Проверка позиций','1 раз/нед.','Ежедневно','Ежедневно']]],
+    ['Аналитика сайта',[['Яндекс Метрика',1,1,1],['Визиты и посетители',1,1,1],['Обращения и конверсия',1,1,1],['Динамика по дням',1,1,1],['Структура трафика по посетителям',0,1,1],['Структура трафика по обращениям',0,1,1],['Прогноз на конец месяца',0,1,1]]],
+    ['Яндекс Директ',[['Подключение кабинета',0,1,1],['Расходы на рекламу',0,1,1],['Активные кампании',0,1,1],['Стоимость обращения',0,1,1],['Динамика рекламы',0,1,1]]],
+    ['SEO',[['Мониторинг позиций',1,1,1],['Базовый SEO-аудит',1,1,1],['Расширенный SEO-аудит',0,1,1],['Мониторинг конкурентов',0,1,1],['Контроль изменений страниц',0,1,1]]],
+    ['Управленческая аналитика',[['Полный дашборд руководителя',0,1,1],['Динамика и тренды',0,1,1],['Проблемы и риски',0,1,1],['Автоматические отчёты',0,1,1]]],
+    ['ИИ и рекомендации',[['ИИ-рекомендации',0,0,1],['Рекомендации по SEO',0,0,1],['Рекомендации по рекламе',0,0,1],['Рекомендации по конверсии',0,0,1],['Приоритизация задач',0,0,1],['Оценка потенциального эффекта',0,0,1]]]
+  ];
+  var h='<thead><tr><th scope="col">Функция</th><th scope="col">Старт<br><span class="small num">4 990 ₽</span></th><th scope="col" class="hot">Профи<br><span class="small num">9 990 ₽</span></th><th scope="col">Бизнес<br><span class="small num">19 990 ₽</span></th></tr></thead>';
+  CMP.forEach(function(g){h+='<tbody><tr class="grp"><td colspan="4">'+g[0]+'</td></tr>';g[1].forEach(function(r){h+='<tr><td>'+r[0]+'</td>'+r.slice(1).map(function(v){return '<td class="num">'+(v===1?Y:v===0?N:'<b>'+v+'</b>')+'</td>'}).join('')+'</tr>'});h+='</tbody>'});
+  document.getElementById('cmp').innerHTML=h;
+
+  /* ---------- CTA bands ---------- */
+  document.querySelectorAll('[data-cta]').forEach(function(c){
+    c.innerHTML='<div style="display:grid;gap:14px"><h2 class="h-sec">Подключите Метрику и посмотрите на свой маркетинг</h2><p>14 дней бесплатно. Поможем с подключением и покажем, где сайт теряет заявки.</p></div>'+
+    '<div class="acts"><a class="btn btn-white" href="#demo" data-go="demo">Попробовать бесплатно <svg class="i arr"><use href="#i-arrow"/></svg></a><a class="btn btn-ghost" href="#pricing" data-go="pricing">Тарифы</a></div>';
+  });
+
+  /* ---------- partner calculator ---------- */
+  var cnt=[0,3,0],com=[998,1998,3998];
+  function calc(){
+    var m=0,c=0;cnt.forEach(function(n,i){m+=n*com[i];c+=n;document.getElementById('n'+i).textContent=n});
+    document.getElementById('cm').textContent=fmt(m)+' ₽';
+    document.getElementById('cy').textContent=fmt(m*12)+' ₽';
+    document.getElementById('cc').textContent=c;
+    var s=document.getElementById('cs');
+    if(c>=3){s.className='status ok';s.innerHTML='<svg class="i"><use href="#i-check"/></svg><span>Порог выполнен: выплаты ежемесячно</span>'}
+    else{s.className='status wait';s.innerHTML='<svg class="i"><use href="#i-alert"/></svg><span>Нужно ещё '+(3-c)+' '+(3-c===1?'активный клиент':'активных клиента')+'. До этого комиссия копится, выплата приостановлена</span>'}
+  }
+  document.querySelectorAll('[data-st]').forEach(function(b){b.addEventListener('click',function(){var i=+b.dataset.st;cnt[i]=Math.max(0,Math.min(50,cnt[i]+(+b.dataset.d)));calc()})});
+  calc();
+
+  /* ---------- lead form ---------- */
+  var form=document.getElementById('lead'),done=document.getElementById('done');
+  function setErr(id,msg){var f=document.getElementById(id).closest('.fld');f.classList.toggle('bad',!!msg);f.querySelector('.err').textContent=msg||''}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();var ok=true;
+    var n=form.name.value.trim(),m=form.email.value.trim(),s=form.site.value.trim();
+    setErr('f-name',n?'':'Укажите, как к вам обращаться');if(!n)ok=false;
+    var mv=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m);setErr('f-mail',mv?'':'Проверьте email: нужен адрес вида name@company.ru');if(!mv)ok=false;
+    setErr('f-site',s?'':'Укажите адрес сайта, например company.ru');if(!s)ok=false;
+    if(!ok){var b=form.querySelector('.bad input');if(b)b.focus();return}
+    form.hidden=true;done.hidden=false;
+  });
+  document.getElementById('again').addEventListener('click',function(){form.reset();form.hidden=false;done.hidden=true});
+
+  /* ---------- theme toggle ---------- */
+  document.getElementById('theme').addEventListener('click',function(){
+    var r=document.documentElement,cur=r.getAttribute('data-theme');
+    var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;
+    r.setAttribute('data-theme',dark?'light':'dark');
+  });
+
+  show(location.hash.slice(1)||'home',true);
+})();
+</script>
+
+</body>
+</html>
